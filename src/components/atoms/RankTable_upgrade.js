@@ -14,6 +14,7 @@ import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
+import Button from '@material-ui/core/Button';
 
 const useRowStyles = makeStyles({
   root: {
@@ -51,23 +52,25 @@ function Row(props) {
   return (
     <React.Fragment>
       <TableRow className={classes.root}>
-        <TableCell>
-          <IconButton aria-label="expand row" size="small" onClick={() => setOpen_content(!open_content)}>
-            {open_content ? <KeyboardArrowUpIcon />: <KeyboardArrowDownIcon />}
-          </IconButton>
-        </TableCell>
-        <TableCell component="th" scope="row">
-          {row.name}
-        </TableCell>
-        <TableCell align="right">{row.likes}</TableCell>
-        <TableCell>
-          <IconButton aria-label="expand row" size="small" onClick={() => setOpen(!open_comment)}>
-            {open_comment ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-          </IconButton>
-        </TableCell>
-        <TableCell> {row.comments}</TableCell>
+        {/* 여기서부터 버튼을 만드려는 시도임 */}
+        <Button onClick={() => setOpen_content(!open_content)}>
+          <TableCell>
+            <IconButton aria-label="expand row" size="small" onClick={() => setOpen_content(!open_content)}>
+              {open_content ? <KeyboardArrowUpIcon />: <KeyboardArrowDownIcon />}
+            </IconButton>
+          </TableCell>
+          <TableCell component="th" scope="row">
+            {row.name}
+          </TableCell>
+          <TableCell align="right">{row.likes}</TableCell>
+          <TableCell>
+            <IconButton aria-label="expand row" size="small" onClick={() => setOpen(!open_comment)}>
+              {open_comment ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+            </IconButton>
+          </TableCell>
+          <TableCell> {row.comments}</TableCell>
+        </Button>
       </TableRow>
-      
        {/* open content(삼행시 나오는 )영역 */} 
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={3}>
@@ -77,8 +80,6 @@ function Row(props) {
                 바나나
               </Typography>
               <Table size="small" aria-label="purchases">
-                <TableHead>
-                </TableHead>
                 <TableBody>
                   {row.history.map((historyRow) => (
                     <TableRow key={historyRow.word}>
@@ -94,7 +95,7 @@ function Row(props) {
           </Collapse>
         </TableCell>
       </TableRow>
-     {/* open comment(삼행시 나오는 )영역 */} 
+     {/* open comment(댓글 나오는)영역 */} 
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={3}>
           <Collapse in={open_comment} timeout="auto" unmountOnExit>
@@ -103,8 +104,6 @@ function Row(props) {
                 Comments
               </Typography>
               <Table size="small" aria-label="purchases">
-                <TableHead>
-                </TableHead>
                 <TableBody>
                   {row.comment_history.map((CommentHistoryRow) => (
                     <TableRow key={CommentHistoryRow.comment}>
