@@ -1,13 +1,11 @@
 import React from 'react';
 import GridContainer from '../components/organisms/GridContainer';
 
-const MainPage = () => {
-
+const HOFPage = () => {
   return (
     <div>
       <GridContainer/>
     </div>
-
   )
 }
-export default MainPage;
+export default HOFPage;
