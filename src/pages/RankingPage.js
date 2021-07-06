@@ -9,7 +9,7 @@ const RankingPage = () => {
     <div>
       <HeadContainer/>
       <Container maxWidth="sm">
-      <RankingContainer/>
+        <RankingContainer/>
       </Container>
     </div>
 

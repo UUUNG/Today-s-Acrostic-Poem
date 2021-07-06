@@ -20,6 +20,7 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
+import CommentIcon from '@material-ui/icons/Comment';
 
 const useRowStyles = makeStyles({
   root: {
@@ -53,9 +54,17 @@ function Row(props) {
         <TableCell component="th" scope="row">
            {row.keyword}
         </TableCell>
-        <TableCell align="right">{row.name}</TableCell>
-        <TableCell align="right">{row.like}</TableCell>
-        <TableCell align="right">{row.comment}</TableCell>
+        <TableCell align="right">
+          <PersonIcon />
+          {row.name}
+        </TableCell>
+        <TableCell align="right">
+          <ThumbUpAltIcon />
+          {row.like}
+        </TableCell>
+        <TableCell align="right">
+          <CommentIcon/>
+          {row.comment}</TableCell>
       </TableRow>
 
 
@@ -117,34 +126,16 @@ const rows = [
 const RankingContainer = () => {
 
   /**주간월간연간 랭킹 */
-
   return (
     <div>
-      <div style={{display:'flex'}}>
-        <div style={{display:'flex'}}>
-          <div style={{display:'flex', minWidth: '100px'}}>
-            <PersonIcon />
-            <Typography variant="caption"style={{textAlign:'center'}}>피구피규</Typography>
-          </div>
-          <Typography variant="caption" style={{textAlign:'center'}}>바나나 나랑 나눠먹을랭?</Typography>
-        </div>
-        <div style={{display:'flex'}}>
-          <ThumbUpAltIcon />
-          <Typography variant="caption" style={{textAlign:'center'}}>13</Typography>
-        </div>
-      </div>
-
+      <Typography component="h1" variant="h2" align="center" color="textPrimary" gutterBottom>
+        주간/월간/연간 랭킹
+      </Typography>
+      <Typography variant="h5" align="center" color="textSecondary" paragraph>
+        주간/월간/연간
+      </Typography>
       <TableContainer component={Paper}>
         <Table aria-label="Ranking table">
-          <TableHead>
-            <TableRow>
-              <TableCell><Typography variant="caption">제시어</Typography></TableCell>
-              <TableCell align="right"><Typography variant="caption">닉네임</Typography></TableCell>
-              <TableCell align="right"><Typography variant="caption">좋아요수</Typography></TableCell>
-              <TableCell align="right"><Typography variant="caption">댓글수</Typography></TableCell>
-
-            </TableRow>
-          </TableHead>
           <TableBody>
             {rows.map((row) => (
               <Row key={row.name} row={row} />

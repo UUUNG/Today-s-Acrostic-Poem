@@ -1,11 +1,15 @@
 import React from 'react';
 import Typography from '@material-ui/core/Typography';
+import {Link} from "react-router-dom";
 const Title = () => {
 
   return (
-    <Typography variant="caption" gutterBottom>
-    오늘의 3행시
-    </Typography>
+    <Link to="/">    
+      <Typography variant="caption" gutterBottom>
+      오늘의 3행시
+      </Typography>
+    </Link>
+
     
   )
 }
