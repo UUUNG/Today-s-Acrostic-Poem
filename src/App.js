@@ -3,17 +3,21 @@ import MainPage from './pages/MainPage';
 import HOFPage from './pages/HOFPage';
 import RankingPage from './pages/RankingPage';
 import {BrowserRouter,Switch,Route} from "react-router-dom";
+import HeadContainer from './components/organisms/HeadContainer';
 
 function App() {
 
   return (
-    <BrowserRouter>
-      <Switch>
-        <Route exact path="/" component={MainPage}/>
-        <Route exact path="/HOFPage" component={HOFPage}/>
-        <Route exact path="/RankingPage" component={RankingPage}/>
-      </Switch>
-    </BrowserRouter>
+    <div>
+      <HeadContainer />
+      <BrowserRouter>
+        <Switch>
+          <Route exact path="/" component={MainPage}/>
+          <Route exact path="/HOFPage" component={HOFPage}/>
+          <Route exact path="/RankingPage" component={RankingPage}/>
+        </Switch>
+      </BrowserRouter>
+    </div>
   );
 }
 export default App;

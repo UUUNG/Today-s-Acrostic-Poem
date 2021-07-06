@@ -9,7 +9,6 @@ const MainPage = () => {
 
   return (
     <div>
-      <HeadContainer/>
       <Container maxWidth="sm">
         <KeywordContainer/>
         <div style={{paddingTop:15}}/>
