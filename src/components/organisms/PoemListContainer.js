@@ -60,39 +60,39 @@ const PoemListContainer = () => {
 
       <Button style={{display:'flex',justifyContent:'space-between',backgroundColor:'#f2f4f7',borderColor:'1px solid black'}} 
                 onClick={() => setOpen_content(!open_content)}>
-                  <TableRow>
-        <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={3}>
-          <Collapse in={open_content} timeout="auto" unmountOnExit>
-            <Box margin={1}>
-              <Typography variant="h6" gutterBottom component="div">
-                바나나
-              </Typography>
-              <Table size="small" aria-label="purchases">
-                <TableBody>
-                  댓글 ~
-                </TableBody>
-              </Table>
-            </Box>
-          </Collapse>
-        </TableCell>
-      </TableRow>
-     {/* open comment(댓글 나오는)영역 */} 
-      <TableRow>
-        <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={3}>
-          <Collapse in={open_comment} timeout="auto" unmountOnExit>
-            <Box margin={1}>
-              <Typography variant="h6" gutterBottom component="div">
-                Comments
-              </Typography>
-              <Table size="small" aria-label="purchases">
-                <TableBody>
-                  댓글 ~
-                </TableBody>
-              </Table>
-            </Box>
-          </Collapse>
-        </TableCell>
-      </TableRow>
+        <TableRow>
+          <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={3}>
+            <Collapse in={open_content} timeout="auto" unmountOnExit>
+              <Box margin={1}>
+                <Typography variant="h6" gutterBottom component="div">
+                  바나나
+                </Typography>
+                <Table size="small" aria-label="purchases">
+                  <TableBody>
+                    댓글 ~
+                  </TableBody>
+                </Table>
+              </Box>
+            </Collapse>
+          </TableCell>
+        </TableRow>
+      {/* open comment(댓글 나오는)영역 */} 
+        <TableRow>
+          <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={3}>
+            <Collapse in={open_comment} timeout="auto" unmountOnExit>
+              <Box margin={1}>
+                <Typography variant="h6" gutterBottom component="div">
+                  Comments
+                </Typography>
+                <Table size="small" aria-label="purchases">
+                  <TableBody>
+                    댓글 ~
+                  </TableBody>
+                </Table>
+              </Box>
+            </Collapse>
+          </TableCell>
+        </TableRow>
         <div style={{display:'flex'}}>
           <div style={{display:'flex', minWidth: '100px'}}>
             <PersonIcon />
