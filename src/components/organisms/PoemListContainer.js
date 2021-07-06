@@ -20,6 +20,8 @@ import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
+import CommentIcon from '@material-ui/icons/Comment';
+
 
 import PoemInfoContainer from './PoemInfoContainer';
 
@@ -57,24 +59,34 @@ const PoemListContainer = () => {
         </Button>    
       </div>
 
-      <Button style={{display:'flex',justifyContent:'space-between',backgroundColor:'#f2f4f7',borderColor:'1px solid black'}} onClick={() => setOpen_content(!open_content)}>
-        <div style={{display: 'flex', flexDirection: 'column'}}>
-          <div style={{display:'flex', minWidth: '100px'}}>
-              <PersonIcon />
-              <Typography variant="caption"style={{textAlign:'center'}}>피구피규</Typography>
-            </div>
-              <Typography variant="caption" style={{textAlign:'center'}}>바나나 나랑 나눠먹을랭?</Typography>
-            <div>
-              <ThumbUpAltIcon />
-              <Typography variant="caption" style={{textAlign:'center'}}>13</Typography>
-            </div>    
-          </div>
-      </Button>
+
+      <React.Fragment>
+      <TableRow onClick={() => setOpen_content(!open_content)}>
+        <TableCell component="th" scope="row">
+        <PersonIcon />
+          피구피규
+        </TableCell>
+        <TableCell align="right">
+        바나나 나랑 나눠먹을랭?
+        </TableCell>
+        <TableCell align="right">
+          <ThumbUpAltIcon />
+          13
+        </TableCell>
+        <TableCell align="right">
+          <CommentIcon/>
+          2
+          </TableCell>
+      </TableRow>
+
+
       <Collapse in={open_content} timeout="auto" unmountOnExit>
-        <PoemInfoContainer/>
+        <PoemInfoContainer />
+        
       </Collapse>
+      </React.Fragment>
+</div>
       
-    </div>
 
     
   )

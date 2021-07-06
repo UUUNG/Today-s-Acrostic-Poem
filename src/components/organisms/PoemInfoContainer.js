@@ -3,6 +3,29 @@ import Typography from '@material-ui/core/Typography';
 import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
 import PrimaryButton from '../atoms/PrimaryButton'
+import { InfoRounded } from '@material-ui/icons';
+import Table from '@material-ui/core/Table';
+import TableHead from '@material-ui/core/TableHead';
+
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableContainer from '@material-ui/core/TableContainer';
+import Collapse from '@material-ui/core/Collapse';
+import TableRow from '@material-ui/core/TableRow';
+import PersonIcon from '@material-ui/icons/Person';
+import ThumbUpAltIcon from '@material-ui/icons/ThumbUpAlt';
+import CommentIcon from '@material-ui/icons/Comment';
+import Box from '@material-ui/core/Box';
+
+
+
+const useRowStyles = makeStyles({
+    root: {
+      '& > *': {
+        borderBottom: 'unset',
+      },
+    },
+  });
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -13,23 +36,62 @@ const useStyles = makeStyles((theme) => ({
   },
 })); 
 
+function createData(keyword, name, like,comment) {
+    return {
+      keyword,
+      name,
+      like,
+      comment,
+      history: [
+        { name: '피구피규', comment: 'ㅋㅋㅋㅋㅋ아 개웃기네' },
+        { name: '뇽뇽냥냥', comment: '이게 왜 랭킹? ㄵ' },
+      ],
+    };
+  }
+
 function PoemInfoContainer() {
-  const classes = useStyles();
+  const [open, setOpen] = React.useState(false);
+  const classes = useRowStyles();
+
   return (
-    <div style={{ backgroundColor: '#cfe8fc'}}>
-      <form className={classes.root}  noValidate autoComplete="off">
-        <TextField id="outlined-basic" label="닉네임" variant="outlined" size="small"/>
-        <TextField id="outlined-basic" label="비밀번호" variant="outlined" size="small"/>
-        <div style={{ margin:10,display:'flex', flexDirection:'column'}}>
-          <TextField required id="standard-required"  defaultValue="바" />
-          <TextField required id="standard-required"  defaultValue="나" />
-          <TextField required id="standard-required"  defaultValue="나" />
-        </div>
-      </form>
-      <div style={{display:'flex',justifyContent:'flex-end'}}>
-        <PrimaryButton name={"등록"}/>
-      </div>
-    </div>
-  )
+    <React.Fragment>
+      <TableRow className={classes.root} onClick={() => setOpen(!open)}>
+        <TableCell component="th" scope="row">
+           작성자: 
+        </TableCell>
+        <TableCell align="right">
+          <PersonIcon />
+          피구피규
+        </TableCell>
+        <TableCell align="right">
+          <ThumbUpAltIcon />
+          3
+        </TableCell>
+        <TableCell align="right">
+          <CommentIcon/>
+          호로로로롤
+          </TableCell>
+      </TableRow>
+
+      <TableRow>
+        <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
+          <Collapse in={open} timeout="auto" unmountOnExit>
+            <Box margin={1}>
+
+              <Table size="small" aria-label="comments">
+                <TableHead>댓글</TableHead>
+                <TableBody>
+                    <TableRow>
+                      <TableCell component="th" scope="row">1</TableCell>
+                      <TableCell>1234</TableCell>
+                    </TableRow>
+                </TableBody>
+              </Table>
+            </Box>
+          </Collapse>
+        </TableCell>
+      </TableRow>
+    </React.Fragment>
+  );
 }
 export default PoemInfoContainer;

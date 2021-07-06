@@ -5,23 +5,21 @@ import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles({
   root:{
-    display:'inline-block', 
-    paddingLeft: 3, 
-    paddingRight: 3, 
-    paddingTop: 0, 
-    paddingBottom: 0, 
     borderRadius: 0,
     backgroundColor:'white',
-    borderColor:'#87ceeb'
+    borderColor:'#87ceeb',
+    width: 500,
+    height: 300
   },
 });
 
-export default function PrimaryButton({name}){
+export default function SubjectButton({name}){
   const classes = useStyles();
 
   return(
     <Button className={classes.root}
-    variant="outlined">
+      variant="outlined"
+    >
       <Typography variant="caption">{name}</Typography>
     </Button>
   )

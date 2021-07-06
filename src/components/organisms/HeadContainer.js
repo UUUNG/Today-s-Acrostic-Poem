@@ -12,7 +12,6 @@ const HeadContainer = () => {
       <div style={{display:'flex',flexGrow:8, flexBasis:0}}>
         <Navbar/>
       </div>
-      
     </div>
   )
 }
