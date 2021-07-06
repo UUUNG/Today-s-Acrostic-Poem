@@ -7,7 +7,6 @@ const RankingPage = () => {
 
   return (
     <div>
-      <HeadContainer/>
       <Container maxWidth="sm">
         <RankingContainer/>
       </Container>
