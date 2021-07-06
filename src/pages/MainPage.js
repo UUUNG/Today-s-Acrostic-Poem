@@ -1,16 +1,23 @@
 import React from 'react';
-import NavbarContainer from '../components/organisms/NavbarContainer';
-import SubjectContainer from '../components/organisms/SubjectContainer';
-import RankContainer from '../components/organisms/RankContainer';
+import HeadContainer from '../components/organisms/HeadContainer';
+import KeywordContainer from '../components/organisms/KeywordContainer';
+import PoemPostContainer from '../components/organisms/PoemPostContainer';
+import PoemListContainer from '../components/organisms/PoemListContainer';
+import Container from '@material-ui/core/Container';
 
 const MainPage = () => {
 
   return (
     <div>
-      <NavbarContainer/>
-      <SubjectContainer/>
-      <RankContainer/>
+      <HeadContainer/>
+      <Container maxWidth="sm">
+        <KeywordContainer/>
+        <PoemPostContainer/>
+        <div style={{paddingTop:15}}/>
+        <PoemListContainer/>
+      </Container>
     </div>
+
   )
 }
 export default MainPage;
