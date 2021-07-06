@@ -7,8 +7,9 @@ const Navbar = () => {
 
   return (
     <div>
+      <PrimaryButton name={"공지사항"}/>
       <Link to="/HOFPage"><PrimaryButton name={"명예의 전당"}/></Link>
-      <Link to="/RankingPage"><PrimaryButton name={"일간/주간/월간/연간 랭킹"}/></Link>
+      <Link to="/RankingPage"><PrimaryButton name={"주간/월간/연간 랭킹"}/></Link>
     </div>
     
   )
