@@ -21,6 +21,8 @@ import Paper from '@material-ui/core/Paper';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 
+import PoemInfoContainer from './PoemInfoContainer';
+
 const PoemListContainer = () => {
 
 
@@ -55,56 +57,23 @@ const PoemListContainer = () => {
         </Button>    
       </div>
 
-
-    
-
-      <Button style={{display:'flex',justifyContent:'space-between',backgroundColor:'#f2f4f7',borderColor:'1px solid black'}} 
-                onClick={() => setOpen_content(!open_content)}>
-                  <TableRow>
-        <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={3}>
-          <Collapse in={open_content} timeout="auto" unmountOnExit>
-            <Box margin={1}>
-              <Typography variant="h6" gutterBottom component="div">
-                바나나
-              </Typography>
-              <Table size="small" aria-label="purchases">
-                <TableBody>
-                  댓글 ~
-                </TableBody>
-              </Table>
-            </Box>
-          </Collapse>
-        </TableCell>
-      </TableRow>
-     {/* open comment(댓글 나오는)영역 */} 
-      <TableRow>
-        <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={3}>
-          <Collapse in={open_comment} timeout="auto" unmountOnExit>
-            <Box margin={1}>
-              <Typography variant="h6" gutterBottom component="div">
-                Comments
-              </Typography>
-              <Table size="small" aria-label="purchases">
-                <TableBody>
-                  댓글 ~
-                </TableBody>
-              </Table>
-            </Box>
-          </Collapse>
-        </TableCell>
-      </TableRow>
-        <div style={{display:'flex'}}>
+      <Button style={{display:'flex',justifyContent:'space-between',backgroundColor:'#f2f4f7',borderColor:'1px solid black'}} onClick={() => setOpen_content(!open_content)}>
+        <div style={{display: 'flex', flexDirection: 'column'}}>
           <div style={{display:'flex', minWidth: '100px'}}>
-            <PersonIcon />
-            <Typography variant="caption"style={{textAlign:'center'}}>피구피규</Typography>
+              <PersonIcon />
+              <Typography variant="caption"style={{textAlign:'center'}}>피구피규</Typography>
+            </div>
+              <Typography variant="caption" style={{textAlign:'center'}}>바나나 나랑 나눠먹을랭?</Typography>
+            <div>
+              <ThumbUpAltIcon />
+              <Typography variant="caption" style={{textAlign:'center'}}>13</Typography>
+            </div>    
           </div>
-          <Typography variant="caption" style={{textAlign:'center'}}>바나나 나랑 나눠먹을랭?</Typography>
-        </div>
-        <div style={{display:'flex'}}>
-          <ThumbUpAltIcon />
-          <Typography variant="caption" style={{textAlign:'center'}}>13</Typography>
-        </div>
       </Button>
+      <Collapse in={open_content} timeout="auto" unmountOnExit>
+        <PoemInfoContainer/>
+      </Collapse>
+      
     </div>
 
     

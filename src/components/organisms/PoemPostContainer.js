@@ -13,7 +13,7 @@ const useStyles = makeStyles((theme) => ({
   },
 })); 
 
-const PoemPostContainer = () => {
+function PoemPostContainer() {
   const classes = useStyles();
   return (
     <div style={{ backgroundColor: '#cfe8fc'}}>

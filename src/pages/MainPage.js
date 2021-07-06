@@ -12,7 +12,6 @@ const MainPage = () => {
       <HeadContainer/>
       <Container maxWidth="sm">
         <KeywordContainer/>
-        <PoemPostContainer/>
         <div style={{paddingTop:15}}/>
         <PoemListContainer/>
       </Container>
