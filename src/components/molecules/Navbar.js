@@ -27,6 +27,7 @@ const Navbar = () => {
           style={{
             fontSize    : 14,
             fontWeight  : 500,
+            color       : '#FFF',
           }}
         >
           공지사항
@@ -40,6 +41,7 @@ const Navbar = () => {
           style={{
             fontSize    : 14,
             fontWeight  : 500,
+            color       : '#FFF',
           }}
         >
           명예의 전당
@@ -53,6 +55,7 @@ const Navbar = () => {
           style={{
             fontSize    : 14,
             fontWeight  : 500,
+            color       : '#FFF',
           }}
         >
           주간/월간/연간 랭킹
