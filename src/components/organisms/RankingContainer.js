@@ -40,8 +40,8 @@ function createData(keyword, name, like,comment) {
   };
 }
 
-function Row(props) {
-  const { row } = props;
+function Row(rows) {
+  const { row } = rows;
   const [open, setOpen] = React.useState(false);
   const classes = useRowStyles();
 
