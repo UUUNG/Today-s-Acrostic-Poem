@@ -21,7 +21,7 @@ const Navbar = () => {
     <div>
       <Button
         className={classes.button}
-        onClick={/* 공지사항 path */null}
+        onClick={() => window.location.href="/NoticePage"}
       >
         <Typography 
           style={{
