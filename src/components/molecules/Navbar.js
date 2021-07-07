@@ -1,7 +1,5 @@
 import React from 'react';
 //import PrimaryButton from '../atoms/PrimaryButton'
-
-import {Link} from "react-router-dom";
 import { makeStyles, Button, Typography } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
