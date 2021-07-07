@@ -1,7 +1,5 @@
 import React from 'react';
 //import PrimaryButton from '../atoms/PrimaryButton'
-
-import {Link} from "react-router-dom";
 import { makeStyles, Button, Typography } from '@material-ui/core';
 
 const useStyles = makeStyles(theme => ({
@@ -21,7 +19,7 @@ const Navbar = () => {
     <div>
       <Button
         className={classes.button}
-        onClick={/* 공지사항 path */null}
+        onClick={() => window.location.href="/NoticePage"}
       >
         <Typography 
           style={{
