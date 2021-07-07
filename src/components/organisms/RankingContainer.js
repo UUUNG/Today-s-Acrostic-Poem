@@ -17,6 +17,8 @@ import CommentIcon from '@material-ui/icons/Comment';
 import GridHead from '../molecules/GridHead';
 import CheckIcon from '@material-ui/icons/Check';
 import Button from '@material-ui/core/Button';
+import ShareIcon from '@material-ui/icons/Share';
+
 const useRowStyles = makeStyles({
   root: {
     '& > *': {
@@ -32,8 +34,8 @@ function createData(keyword, name, like,comment) {
     like,
     comment,
     history: [
-      { name: '피구피규', comment: 'ㅋㅋㅋㅋㅋ아 개웃기네' },
-      { name: '뇽뇽냥냥', comment: '이게 왜 랭킹? ㄵ' },
+      { name: '피구피규', comment: 'ㅋㅋㅋㅋㅋ아 개웃기네zzzzzzzzzzzzzz' },
+      { name: '뇽뇽', comment: '이게 왜 랭킹? ㄵ' },
     ],
   };
 }
@@ -45,46 +47,54 @@ function Row(props) {
 
   return (
     <React.Fragment>
+      <Paper variant="outlined" square style={{display:'flex', flexDirection:'column',flexGrow:5,flexBasis:0}}>
       <TableRow className={classes.root} onClick={() => setOpen(!open)}>
-        <TableCell component="th" scope="row">
-           {row.keyword}
-        </TableCell>
-        <TableCell align="right">
-          <PersonIcon />
-          {row.name}
-        </TableCell>
-        <TableCell align="right">
-          <ThumbUpAltIcon />
-          {row.like}
-        </TableCell>
-        <TableCell align="right">
-          <CommentIcon/>
-          {row.comment}</TableCell>
+        <div style={{display:'flex', flexGrow:5,flexBasis:0}}>
+          <Typography style={{flexGrow:2,flexBasis:0}}>{row.keyword}</Typography>
+          <div style={{display:'flex',flexGrow:1,flexBasis:0}}>
+            <PersonIcon />
+            <Typography >{row.name}</Typography>
+          </div>
+          <div style={{display:'flex',flexGrow:1,flexBasis:0}}>
+            <ThumbUpAltIcon />
+            <Typography>{row.like}</Typography>
+          </div>
+          <div style={{display:'flex',flexGrow:1,flexBasis:0}}>
+            <CommentIcon />
+            <Typography>{row.comment}</Typography>
+          </div>
+        </div>
+
       </TableRow>
 
       <TableRow>
-        <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
-          <Collapse in={open} timeout="auto" unmountOnExit>
-            <Box margin={1}>
+        <Collapse in={open} timeout="auto" unmountOnExit>
+          <Box margin={3}>
+            <Paper variant="outlined" square style={{padding:10}}>
               <Typography variant="caption" gutterBottom component="div">
                 바나나 나랑 나눠먹자
               </Typography>
-              <Table size="small" aria-label="comments">
-                <TableBody>
-                  {row.history.map((historyRow) => (
-                    <TableRow key={historyRow.date}>
-                      <TableCell component="th" scope="row">
-                        {historyRow.name}
-                      </TableCell>
-                      <TableCell>{historyRow.comment}</TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </Box>
-          </Collapse>
-        </TableCell>
+              <div style={{display:'flex',justifyContent:'center'}}>
+                <Typography variant="caption" >공유하기</Typography>
+                <ShareIcon fontSize="small"/>
+              </div>
+              
+            </Paper>
+
+            <Table size="small" aria-label="comments">
+              <TableBody>
+                {row.history.map((historyRow) => (
+                  <div style={{display:'flex', flexGrow:5,flexBasis:0 , minWidth:'parent'}}>
+                    <Typography variant="caption" style={{flexGrow:2,flexBasis:0}}>{historyRow.name}</Typography>
+                    <Typography variant="caption" style={{flexGrow:3,flexBasis:0}}>{historyRow.comment}</Typography>
+                  </div>
+                ))}
+              </TableBody>
+            </Table>
+          </Box>
+        </Collapse>
       </TableRow>
+      </Paper>
     </React.Fragment>
   );
 }
