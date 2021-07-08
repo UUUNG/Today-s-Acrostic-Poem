@@ -51,40 +51,66 @@ const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 const Grids = () => {
     const classes = useStyles();
     const [open, setOpen] = React.useState(false);
+    const img_history = [
+      "https://cdn.pixabay.com/photo/2014/12/21/23/39/bananas-575773_960_720.png",
+      "https://cdn.pixabay.com/photo/2014/12/21/23/39/bananas-575773_960_720.png",
+      'https://cdn.pixabay.com/photo/2013/11/28/09/58/peach-219845_960_720.jpg',
+      'https://cdn.pixabay.com/photo/2014/12/28/18/22/grapes-582207_960_720.jpg',
+      'https://cdn.pixabay.com/photo/2014/08/21/09/25/raspberries-423194_960_720.jpg',
+      'https://cdn.pixabay.com/photo/2016/07/06/20/56/coconut-1501334_960_720.jpg',
+      'https://cdn.pixabay.com/photo/2013/07/12/19/24/durian-fruit-154723_960_720.png',
+      'https://cdn.pixabay.com/photo/2012/04/26/19/37/fig-42900_960_720.png',
+      'https://cdn.pixabay.com/photo/2012/04/26/12/52/orange-42395_960_720.png',
+      'https://cdn.pixabay.com/photo/2014/04/02/10/43/tomato-304316_960_720.png',
+      'https://cdn.pixabay.com/photo/2014/03/24/17/07/orange-295065_960_720.png',
+    ]
+
+    const subjects = [
+      '',
+      '바나나',
+      '복숭아',
+      '청포도',
+      '산딸기',
+      '코코넛',
+      '두리안',
+      '무화과',
+      '오렌지',
+      '토마토',
+      '한라봉'
+    ]
 
     return (
         <Grid container spacing={5}>
         {cards.map((card) => (
             <Grid item key={card} xs={12} sm={6} md={4}>
-                <Card className={classes.card}>
-                <Popup trigger={
-                    <Button style={{display:'flex',justifyContent:'space-between',backgroundColor:'#f2f4f7',borderColor:'1px solid black'}} 
-                    onClick={() => setOpen(!open)}>
-                        <CardContent className={classes.cardContent}>
-                        <Hidden xsDown>
-                            <CardMedia className={classes.cardMedia} image="https://cdn.pixabay.com/photo/2014/12/21/23/39/bananas-575773_960_720.png" title="Image title"/>
-                        </Hidden>
-                        <Typography gutterBottom variant="h4" component="h2"> 바나나 </Typography>
-                        <ThumbUpAltIcon /> 100
-                        </CardContent>
-                    </Button>
-                } position="right center">
-                        {/* 클릭 시 팝업 출력 부분 */}
-                        <div style={{display:'flex', backgroundColor:'#f2f4f7'}}>
-                            <div style={{display:'flex'}}>
-                                <div style={{display:'flex', minWidth: '100px'}}>
-                                    <PersonIcon />
-                                    <Typography variant="caption"style={{textAlign:'center'}}>피구피규</Typography>
-                                </div>
-                                <Typography variant="caption" style={{textAlign:'center'}}>바나나 나랑 나눠먹을랭?</Typography>
-                            </div>
-                            <div style={{display:'flex'}}>
-                                <ThumbUpAltIcon />
-                                <Typography variant="caption" style={{textAlign:'center'}}>13</Typography>
-                            </div>
-                        </div>
-                    </Popup>
-                </Card>        
+              <Card className={classes.card}>
+              <Popup trigger={
+                  <Button style={{display:'flex',justifyContent:'space-between',backgroundColor:'#f2f4f7',borderColor:'1px solid black'}} 
+                  onClick={() => setOpen(!open)}>
+                      <CardContent className={classes.cardContent}>
+                      <Hidden xsDown>
+                          <CardMedia className={classes.cardMedia} image={img_history[card]} title="Image title"/>
+                      </Hidden>
+                      <Typography gutterBottom variant="h4" component="h2"> {subjects[card]} <ThumbUpAltIcon /> 100 </Typography>
+                      </CardContent>
+                  </Button>
+              } position="right center">
+                      <div style={{display:'flex', backgroundColor:'#f2f4f7'}}>
+                          {/* 클릭 시 팝업 출력 부분 */}
+                          <div style={{display:'flex'}}>
+                              <div style={{display:'flex', minWidth: '100px'}}>
+                                  <PersonIcon />
+                                  <Typography variant="caption"style={{textAlign:'center'}}>피구피규</Typography>
+                              </div>
+                              <Typography variant="caption" style={{textAlign:'center'}}>바나나 나랑 나눠먹을랭?</Typography>
+                          </div>
+                          <div style={{display:'flex'}}>
+                              <ThumbUpAltIcon />
+                              <Typography variant="caption" style={{textAlign:'center'}}>13</Typography>
+                          </div>
+                      </div>
+                </Popup>
+              </Card>        
             </Grid>
         ))}
      </Grid>
