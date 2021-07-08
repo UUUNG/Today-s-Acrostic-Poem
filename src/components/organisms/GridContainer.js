@@ -2,10 +2,11 @@ import React from 'react';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
-import Grids from '../molecules/Grids';
+import Grids from '../molecules/Grids'
 import GridHead from '../molecules/GridHead';
 import GridButtons from '../atoms/GridButtons';
 import Footer from '../atoms/Footer';
+
 
 const useStyles = makeStyles((theme) => ({
     icon: {

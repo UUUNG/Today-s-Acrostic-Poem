@@ -11,7 +11,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 
 import ThumbUpAltIcon from '@material-ui/icons/ThumbUpAlt';
-import PersonIcon from '@material-ui/icons/Person';
+import PoemListContainer from '../organisms/PoemListContainer';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -46,68 +46,54 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-const cards = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+  
+function createData(subject, like, img) {
+  return {
+    subject,
+    like,
+    img,
+  };
+}
 
-const Grids = () => {
+const griddatas = [
+  createData('바나나','341',"https://cdn.pixabay.com/photo/2014/12/21/23/39/bananas-575773_960_720.png"),
+  createData('복숭아','291','https://cdn.pixabay.com/photo/2013/11/28/09/58/peach-219845_960_720.jpg'),
+  createData('청포도','277', 'https://cdn.pixabay.com/photo/2014/12/28/18/22/grapes-582207_960_720.jpg'),
+  createData('산딸기','262','https://cdn.pixabay.com/photo/2014/08/21/09/25/raspberries-423194_960_720.jpg'),
+  createData('코코넛','259','https://cdn.pixabay.com/photo/2016/07/06/20/56/coconut-1501334_960_720.jpg'),
+  createData('두리안','231','https://cdn.pixabay.com/photo/2013/07/12/19/24/durian-fruit-154723_960_720.png'),
+  createData('무화과','216','https://cdn.pixabay.com/photo/2012/04/26/19/37/fig-42900_960_720.png',),
+  createData('오렌지','179','https://cdn.pixabay.com/photo/2012/04/26/12/52/orange-42395_960_720.png'),
+  createData('토마토','163','https://cdn.pixabay.com/photo/2014/04/02/10/43/tomato-304316_960_720.png'),
+  createData('한라봉','143','https://cdn.pixabay.com/photo/2014/03/24/17/07/orange-295065_960_720.png'),
+];
+
+
+ 
+
+const Grids = (props) => {
     const classes = useStyles();
     const [open, setOpen] = React.useState(false);
-    const img_history = [
-      "https://cdn.pixabay.com/photo/2014/12/21/23/39/bananas-575773_960_720.png",
-      "https://cdn.pixabay.com/photo/2014/12/21/23/39/bananas-575773_960_720.png",
-      'https://cdn.pixabay.com/photo/2013/11/28/09/58/peach-219845_960_720.jpg',
-      'https://cdn.pixabay.com/photo/2014/12/28/18/22/grapes-582207_960_720.jpg',
-      'https://cdn.pixabay.com/photo/2014/08/21/09/25/raspberries-423194_960_720.jpg',
-      'https://cdn.pixabay.com/photo/2016/07/06/20/56/coconut-1501334_960_720.jpg',
-      'https://cdn.pixabay.com/photo/2013/07/12/19/24/durian-fruit-154723_960_720.png',
-      'https://cdn.pixabay.com/photo/2012/04/26/19/37/fig-42900_960_720.png',
-      'https://cdn.pixabay.com/photo/2012/04/26/12/52/orange-42395_960_720.png',
-      'https://cdn.pixabay.com/photo/2014/04/02/10/43/tomato-304316_960_720.png',
-      'https://cdn.pixabay.com/photo/2014/03/24/17/07/orange-295065_960_720.png',
-    ]
-
-    const subjects = [
-      '',
-      '바나나',
-      '복숭아',
-      '청포도',
-      '산딸기',
-      '코코넛',
-      '두리안',
-      '무화과',
-      '오렌지',
-      '토마토',
-      '한라봉'
-    ]
 
     return (
         <Grid container spacing={5}>
-        {cards.map((card) => (
-            <Grid item key={card} xs={12} sm={6} md={4}>
+        {griddatas.map((griddata) => (
+            <Grid item key={griddata.subject} xs={12} sm={6} md={4}>
               <Card className={classes.card}>
               <Popup trigger={
                   <Button style={{display:'flex',justifyContent:'space-between',backgroundColor:'#f2f4f7',borderColor:'1px solid black'}} 
                   onClick={() => setOpen(!open)}>
                       <CardContent className={classes.cardContent}>
                       <Hidden xsDown>
-                          <CardMedia className={classes.cardMedia} image={img_history[card]} title="Image title"/>
+                          <CardMedia className={classes.cardMedia} image={griddata.img} title="Image title"/>
                       </Hidden>
-                      <Typography gutterBottom variant="h4" component="h2"> {subjects[card]} <ThumbUpAltIcon /> 100 </Typography>
+                      <Typography gutterBottom variant="h4" component="h2"> {griddata.subject} <ThumbUpAltIcon /> {griddata.like} </Typography>
                       </CardContent>
                   </Button>
               } position="right center">
                       <div style={{display:'flex', backgroundColor:'#f2f4f7'}}>
                           {/* 클릭 시 팝업 출력 부분 */}
-                          <div style={{display:'flex'}}>
-                              <div style={{display:'flex', minWidth: '100px'}}>
-                                  <PersonIcon />
-                                  <Typography variant="caption"style={{textAlign:'center'}}>피구피규</Typography>
-                              </div>
-                              <Typography variant="caption" style={{textAlign:'center'}}>바나나 나랑 나눠먹을랭?</Typography>
-                          </div>
-                          <div style={{display:'flex'}}>
-                              <ThumbUpAltIcon />
-                              <Typography variant="caption" style={{textAlign:'center'}}>13</Typography>
-                          </div>
+                          <PoemListContainer></PoemListContainer>
                       </div>
                 </Popup>
               </Card>        
