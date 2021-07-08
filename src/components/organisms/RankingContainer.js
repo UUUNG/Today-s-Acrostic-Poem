@@ -1,21 +1,14 @@
 import React from 'react';
-import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
-import PersonIcon from '@material-ui/icons/Person';
-import ThumbUpAltIcon from '@material-ui/icons/ThumbUpAlt';
 import PropTypes from 'prop-types';
-import Collapse from '@material-ui/core/Collapse';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableContainer from '@material-ui/core/TableContainer';
-import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import CommentIcon from '@material-ui/icons/Comment';
 import GridHead from '../molecules/GridHead';
 import CheckIcon from '@material-ui/icons/Check';
 import Button from '@material-ui/core/Button';
-import ShareIcon from '@material-ui/icons/Share';
 import Row from '../molecules/Row'
 
 function createData(keyword, name, like,comment) {

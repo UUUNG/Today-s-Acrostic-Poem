@@ -1,29 +1,11 @@
 import React from 'react';
-import Typography from '@material-ui/core/Typography';
-import TextField from '@material-ui/core/TextField';
-import { makeStyles } from '@material-ui/core/styles';
-import PrimaryButton from '../atoms/PrimaryButton'
 import Button from '@material-ui/core/Button';
-import Box from '@material-ui/core/Box';
-import PersonIcon from '@material-ui/icons/Person';
-import ThumbUpAltIcon from '@material-ui/icons/ThumbUpAlt';
 
-import PropTypes from 'prop-types';
-import Collapse from '@material-ui/core/Collapse';
-import IconButton from '@material-ui/core/IconButton';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
-import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
-import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
-import CommentIcon from '@material-ui/icons/Comment';
 
-
-import RankingContainer from './RankingContainer';
 import Row from '../molecules/Row';
 import CheckIcon from '@material-ui/icons/Check';
 
@@ -43,9 +25,9 @@ function createData(keyword, name, like,comment) {
 
 const likeRows = [
   createData('바나나','피구피규',37,10),
-  createData('김다은','이부', 33,12),
-  createData('최재웅','숨겨진트롤',23,3),
-  createData('한승우','피융신',17,5),
+  createData('바나나','이부', 33,12),
+  createData('바나나','숨겨진트롤',23,3),
+  createData('바나나','피융신',17,5),
 ];
 
 const recentRows = [
@@ -63,19 +45,8 @@ const moreRows = [
 ];
 
 
-const useStyles = makeStyles((theme) => ({
-
-  heroContent: {
-    padding: theme.spacing(8, 0, 6),
-  },
-  
-}));
-
-
 const PoemListContainer = () => {
 
-
-  const classes = useStyles();
   const [sorting, setSorting] = React.useState('실시간 좋아요순');
   const [displayData, setDisplayData]=React.useState(likeRows);
   

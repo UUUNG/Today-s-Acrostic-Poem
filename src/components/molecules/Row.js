@@ -4,18 +4,15 @@ import { makeStyles } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
 import PersonIcon from '@material-ui/icons/Person';
 import ThumbUpAltIcon from '@material-ui/icons/ThumbUpAlt';
-import PropTypes from 'prop-types';
 import Collapse from '@material-ui/core/Collapse';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
-import TableContainer from '@material-ui/core/TableContainer';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import CommentIcon from '@material-ui/icons/Comment';
-import GridHead from '../molecules/GridHead';
-import CheckIcon from '@material-ui/icons/Check';
-import Button from '@material-ui/core/Button';
 import ShareIcon from '@material-ui/icons/Share';
+import Button from '@material-ui/core/Button'
+import TextField from '@material-ui/core/TextField'
 
 const useRowStyles = makeStyles({
     root: {
@@ -29,7 +26,8 @@ function Row(rows) {
     const { row } = rows;
     const [open, setOpen] = React.useState(false);
     const classes = useRowStyles();
-  
+    const [openReply, setOpen_reply] = React.useState(false);
+
     return (
       <React.Fragment>
         <Paper variant="outlined" square style={{display:'flex', flexDirection:'column',flexGrow:5,flexBasis:0}}>
@@ -74,6 +72,18 @@ function Row(rows) {
                       <Typography variant="caption" style={{flexGrow:3,flexBasis:0}}>{historyRow.comment}</Typography>
                     </div>
                   ))}
+                  <div style={{display:'flex',flexGrow:1,flexBasis:0}}>
+                    <Button onClick={() => setOpen_reply(!openReply)}>
+                      댓글쓰기
+                    </Button>
+                  </div>
+                    <Collapse in={openReply} timeout="auto" unmountOnExit>
+                      <div style={{ margin:5,display:'flex', flexDirection:'row'}}>
+                        <TextField required id="standard-required"  defaultValue="닉네임"/>
+                        <TextField required id="standard-required"  defaultValue="비밀번호" />
+                        <TextField required id="standard-required"  defaultValue="내용" />
+                      </div>
+                  </Collapse>
                 </TableBody>
               </Table>
             </Box>
