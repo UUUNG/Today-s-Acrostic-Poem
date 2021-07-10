@@ -15,6 +15,7 @@ import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import LastPageIcon from '@material-ui/icons/LastPage';
 import GridHead from '../components/molecules/GridHead';
+import { useEffect } from 'react';
 
 const useStyles1 = makeStyles((theme) => ({
   root: {
@@ -125,37 +126,97 @@ export default function NoticePage() {
     setPage(0);
   };
 
+  const [notice, setNotice]=React.useState(0)
+
+  const callApi = async()=>{
+    const response = await fetch('/NoticePage');
+    const body = await response.json();
+    return body;
+  }
+
+  useEffect(()=>{
+      callApi()
+      .then(res=>setNotice(res))
+      .catch(err=>console.log(err));
+  });
+
+  function DisplayNotice() {
+    <TableContainer component={Paper}>
+    <Table className={classes.table} aria-label="custom pagination table">
+      <TableBody in={notice}>
+            <TableRow key={notice.title}>
+              <TableCell component="th" scope="row">
+                {notice.title}
+              </TableCell>
+              <TableCell style={{ width: 160 }} align="right">
+                {notice.writer}
+              </TableCell>
+              <TableCell style={{ width: 160 }} align="right">
+                {notice.dates}
+              </TableCell>
+            </TableRow>
+        
+
+        {emptyRows > 0 && (
+          <TableRow style={{ height: 53 * emptyRows }}>
+            <TableCell colSpan={6} />
+          </TableRow>
+        )}
+      </TableBody>
+      <TableFooter>
+        <TableRow>
+          <TablePagination
+            rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
+            colSpan={3}
+            count={rows.length}
+            rowsPerPage={rowsPerPage}
+            page={page}
+            SelectProps={{
+              inputProps: { 'aria-label': 'rows per page' },
+              native: true,
+            }}
+            onChangePage={handleChangePage}
+            onChangeRowsPerPage={handleChangeRowsPerPage}
+            ActionsComponent={TablePaginationActions}
+          />
+        </TableRow>
+      </TableFooter>
+    </Table>
+  </TableContainer>
+
+  }
+
   return (
     <div>
       <div className={classes.heroContent}>
         <GridHead name="공지사항" description=" "/>
       </div>
-
+      
       <TableContainer component={Paper}>
         <Table className={classes.table} aria-label="custom pagination table">
           <TableBody>
-            {(rowsPerPage > 0
-              ? rows.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-              : rows
-            ).map((row) => (
-              <TableRow key={row.title}>
+          {notice ? ((rowsPerPage > 0
+              ? notice.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              : notice
+            ).map((notice) => (
+              <TableRow key={notice.title}>
                 <TableCell component="th" scope="row">
-                  {row.title}
+                  {notice.title}
                 </TableCell>
                 <TableCell style={{ width: 160 }} align="right">
-                  {row.writer}
+                  {notice.writer}
                 </TableCell>
                 <TableCell style={{ width: 160 }} align="right">
-                  {row.date}
+                  {notice.date}
                 </TableCell>
               </TableRow>
-            ))}
-
+             ))) : ""}
             {emptyRows > 0 && (
               <TableRow style={{ height: 53 * emptyRows }}>
                 <TableCell colSpan={6} />
               </TableRow>
             )}
+           
           </TableBody>
           <TableFooter>
             <TableRow>
