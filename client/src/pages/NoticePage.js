@@ -82,25 +82,6 @@ TablePaginationActions.propTypes = {
   rowsPerPage: PropTypes.number.isRequired,
 };
 
-function createData(title, writer, date) {
-  return { title, writer, date };
-}
-
-const rows = [
-  createData('공지사항1', '운영자',20200205),
-  createData('공지사항2', '운영자',20200203),
-  createData('공지사항3', '운영자',20200201),
-  createData('공지사항4', '운영자',20200130),
-  createData('공지사항5', '운영자',20200125),
-  createData('공지사항6', '운영자',20200120),
-  createData('공지사항7', '운영자',20200110),
-  createData('공지사항8', '운영자',20200101),
-  createData('공지사항9', '운영자',20210302),
-  createData('공지사항10', '운영자',20210505),
-  createData('공지사항11', '운영자',20210809),
-
-].sort((a, b) => (a.date > b.date ? -1 : 1));
-
 const useStyles2 = makeStyles((theme)=>({
   table: {
     minWidth: 500,
@@ -114,8 +95,9 @@ export default function NoticePage() {
   const classes = useStyles2();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [notice, setNotice]=React.useState(0)
 
-  const emptyRows = rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
+  const emptyRows = rowsPerPage - Math.min(rowsPerPage, notice.length - page * rowsPerPage);
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
@@ -126,8 +108,6 @@ export default function NoticePage() {
     setPage(0);
   };
 
-  const [notice, setNotice]=React.useState(0)
-
   const callApi = async()=>{
     const response = await fetch('/NoticePage');
     const body = await response.json();
@@ -136,55 +116,9 @@ export default function NoticePage() {
 
   useEffect(()=>{
       callApi()
-      .then(res=>setNotice(res))
+      .then(res=>setNotice(res[0]))
       .catch(err=>console.log(err));
-  });
-
-  function DisplayNotice() {
-    <TableContainer component={Paper}>
-    <Table className={classes.table} aria-label="custom pagination table">
-      <TableBody in={notice}>
-            <TableRow key={notice.title}>
-              <TableCell component="th" scope="row">
-                {notice.title}
-              </TableCell>
-              <TableCell style={{ width: 160 }} align="right">
-                {notice.writer}
-              </TableCell>
-              <TableCell style={{ width: 160 }} align="right">
-                {notice.dates}
-              </TableCell>
-            </TableRow>
-        
-
-        {emptyRows > 0 && (
-          <TableRow style={{ height: 53 * emptyRows }}>
-            <TableCell colSpan={6} />
-          </TableRow>
-        )}
-      </TableBody>
-      <TableFooter>
-        <TableRow>
-          <TablePagination
-            rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
-            colSpan={3}
-            count={rows.length}
-            rowsPerPage={rowsPerPage}
-            page={page}
-            SelectProps={{
-              inputProps: { 'aria-label': 'rows per page' },
-              native: true,
-            }}
-            onChangePage={handleChangePage}
-            onChangeRowsPerPage={handleChangeRowsPerPage}
-            ActionsComponent={TablePaginationActions}
-          />
-        </TableRow>
-      </TableFooter>
-    </Table>
-  </TableContainer>
-
-  }
+  }, [page]);
 
   return (
     <div>
@@ -223,7 +157,7 @@ export default function NoticePage() {
               <TablePagination
                 rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
                 colSpan={3}
-                count={rows.length}
+                count={notice.length}
                 rowsPerPage={rowsPerPage}
                 page={page}
                 SelectProps={{

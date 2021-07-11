@@ -1,3 +1,4 @@
+const fs = require('fs');
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
@@ -21,31 +22,58 @@ app.set('view engine', 'pug');
 app.use(logger('dev'));
 app.use(cors())
 app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+//const data = fs.readFileSync("./lib/pool.js");
+//var conf = JSON.parse(data);
+//var mysql = require('mysql');
+
+//pool.connect();
+
+//pool.connection.connet();
+const router = express.Router();
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
+/*
+app.get('/', (req, res, next) => {
+  //var connect;
+  pool.getConnection()
+  .then((connect) => {
+    return connect.query('SELECT * FROM notice');
+  }).then((r) => { 
+    res.json(r); 
+  }).catch((e) => {
+    res.json(e);
+  });
+});
+*/
 
-///////////////////////////////////////
-app.get('/NoticePage', (req, res) => { //클라이언트가 해당 경로에 접속하게 될 때 
-  res.send([
-    {'title':'공지ss사항2', 'writer':'운영자','date':20200203},
-    {'title':'공지ss사항1', 'writer':'운영자','date':20200205},
-    {'title':'공지ss사항3', 'writer':'운영자','date':20200201},
-    {'title':'공지ss사항4', 'writer':'운영자','date':20200130},
-    {'title':'공지ss사항5', 'writer':'운영자','date':20200125},
-    {'title':'공지ss사항6', 'writer':'운영자','date':20200120},
-    {'title':'공지ss사항7', 'writer':'운영자','date':20200110},
-    {'title':'공지ss사항8', 'writer':'운영자','date':20200101},
-    {'title':'공지ss사항9', 'writer':'운영자','date':20210302},
-    {'title':'공지ss사항10', 'writer':'운영자','date':20210505},
-    {'title':'공지ss사항11', 'writer':'운영자','date':20210809}
-  ]);
+app.get('/NoticePage', async (req, res, next) => {
+  try {
+    const connect = await pool.getConnection();
+    const row = await connect.query('SELECT * FROM notice;');
+    connect.release();
+    res.json(row);
+  }
+  catch(e) {
+    res.json(e);
+  }
 });
 
+/*
+app.get('/NoticePage', (req, res) => { //클라이언트가 해당 경로에 접속하게 될 때 
+  pool.promise().query("SELECT * FROM notice")
+  .then( ([rows, fields]) => { 
+    res.send(rows); 
+  })
+});
+*/
+
+//    const [rows, fields] = await pool.query("SELECT * FROM notice");
 
 
 // catch 404 and forward to error handler
