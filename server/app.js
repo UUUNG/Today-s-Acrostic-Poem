@@ -64,6 +64,18 @@ app.get('/NoticePage', async (req, res, next) => {
   }
 });
 
+app.get('/RankingPageMonth', async (req, res, next) => {
+  try {
+    const connect = await pool.getConnection();
+    const row = await connect.query('SELECT * FROM project1.POEM WHERE created > "2021-07" AND created<"2021-08" order by likes desc');
+    connect.release();
+    res.json(row);
+  }
+  catch(e) {
+    res.json(e);
+  }
+});
+
 /*
 app.get('/NoticePage', (req, res) => { //클라이언트가 해당 경로에 접속하게 될 때 
   pool.promise().query("SELECT * FROM notice")

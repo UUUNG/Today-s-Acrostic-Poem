@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useEffect} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
 import PropTypes from 'prop-types';
@@ -11,11 +11,11 @@ import CheckIcon from '@material-ui/icons/Check';
 import Button from '@material-ui/core/Button';
 import Row from '../molecules/Row'
 
-function createData(keyword, name, like,comment) {
+function createData(word, name, likes,comment) {
   return {
-    keyword,
+    word,
     name,
-    like,
+    likes,
     comment,
     history: [
       { name: '피구피규', comment: 'ㅋㅋㅋㅋㅋ아 개웃기네zzzzzzzzzzzzzz' },
@@ -28,8 +28,8 @@ function createData(keyword, name, like,comment) {
 Row.propTypes = {
   row: PropTypes.shape({
     name: PropTypes.string.isRequired,
-    keyword: PropTypes.string.isRequired,
-    like: PropTypes.number.isRequired,
+    word: PropTypes.string.isRequired,
+    likes: PropTypes.number.isRequired,
     comment: PropTypes.number.isRequired,
     history: PropTypes.arrayOf(
       PropTypes.shape({
@@ -41,10 +41,10 @@ Row.propTypes = {
 };
 
 const weeklyRows = [
-  createData('바나나','피구피규',37,10),
-  createData('김다은','이부', 33,12),
-  createData('최재웅','숨겨진트롤',23,3),
-  createData('한승우','피융신',17,5),
+  {'word':'바나나','name':'피구피규','likes':37,'comment':10, 'history':[{name:'피구피규',comment:'ㅋㅋㅋd아 개웃기네'},{ name: '뇽뇽', comment: '이게 왜 랭킹? ㄵ' },]},
+  {'word':'김다은','name':'이부','likes':33,'comment':12,'history':[{name:'피구피규',comment:'ㅋㅋㅋd아 개웃기네'},{ name: '뇽뇽', comment: '이게 왜 랭킹? ㄵ' },]},
+  {'word':'최재웅','name':'숨겨진트롤','likes':23,'comment':3,'history':[{name:'피구피규',comment:'ㅋㅋㅋd아 개웃기네'},{ name: '뇽뇽', comment: '이게 왜 랭킹? ㄵ' },]},
+  {'word':'한승우','name':'피피융신','likes':17,'comment':5,'history':[{name:'피구피규',comment:'ㅋㅋㅋd아 개웃기네'},{ name: '뇽뇽', comment: '이게 왜 랭킹? ㄵ' },]},
 ];
 
 const monthlyRows = [
@@ -55,10 +55,10 @@ const monthlyRows = [
 ];
 
 const yearlyRows = [
-  createData('파인애플','피구피규',37,10),
-  createData('김다은','이부', 33,12),
-  createData('최재웅','숨겨진트롤',23,3),
-  createData('한승우','피융신',17,5),
+  {'word':'복숭아','name':'피구피규','likes':37,'comment':10, 'history':[{name:'피구피규',comment:'ㅋㅋㅋd아 개웃기네'},{ name: '뇽뇽', comment: '이게 왜 랭킹? ㄵ' },]},
+  {'word':'김다은','name':'이부','likes':33,'comment':12,'history':[{name:'피구피규',comment:'ㅋㅋㅋd아 개웃기네'},{ name: '뇽뇽', comment: '이게 왜 랭킹? ㄵ' },]},
+  {'word':'최재웅','name':'숨겨진트롤','likes':23,'comment':3,'history':[{name:'피구피규',comment:'ㅋㅋㅋd아 개웃기네'},{ name: '뇽뇽', comment: '이게 왜 랭킹? ㄵ' },]},
+  {'word':'한승우','name':'피피융신','likes':17,'comment':5,'history':[{name:'피구피규',comment:'ㅋㅋㅋd아 개웃기네'},{ name: '뇽뇽', comment: '이게 왜 랭킹? ㄵ' },]},
 ];
 
 const useStyles = makeStyles((theme) => ({
@@ -73,7 +73,21 @@ const RankingContainer = () => {
   const classes = useStyles();
   const [sorting, setSorting] = React.useState('주간');
   const [rankData, setRankData]=React.useState(weeklyRows);
-  
+  const [monthlylist, setMonthlyList]=React.useState(0);
+
+  const callApi = async()=>{
+    const response = await fetch('/RankingPageMonth');
+    const body = await response.json();
+    return body;
+  }
+
+  useEffect(()=>{
+      callApi()
+      .then(res=>setMonthlyList(res[0]))
+      .catch(err=>console.log(err));
+
+  }, []);
+
   const handleSortingClick = (category) => {
     setSorting(category);
   };
@@ -82,8 +96,8 @@ const RankingContainer = () => {
     if(check === '주간'){
       setRankData(weeklyRows)
     }
-    else if(check === '월간'){
-      setRankData(monthlyRows)
+    else if(check === '월간'&& monthlylist!=null){
+      setRankData(monthlylist)
     }
     else if(check === '연간'){
       setRankData(yearlyRows)
@@ -101,7 +115,7 @@ const RankingContainer = () => {
       <div className={classes.heroContent}>
         <GridHead name="주간/월간/연간랭킹" description="주간/월간/연간별 랭킹을 보여줍니다."/>
       </div>
-
+      {monthlylist? <div>{monthlylist[0].created}</div> : <div></div>}
       <Box flexDirection="row" style={{display: 'inline-flex'}}>
         <Button onClick={() => handleSortingClick('주간')}>
           {sorting=== '주간' ? <CheckedButton check={'주간'}/> : '주간' } 
