@@ -33,14 +33,14 @@ function Row(rows) {
         <Paper variant="outlined" square style={{display:'flex', flexDirection:'column',flexGrow:5,flexBasis:0}}>
         <TableRow className={classes.root} onClick={() => setOpen(!open)}>
           <div style={{display:'flex', flexGrow:5,flexBasis:0}}>
-            <Typography style={{flexGrow:2,flexBasis:0}}>{row.keyword}</Typography>
+            <Typography style={{flexGrow:2,flexBasis:0}}>{row.word}</Typography>
             <div style={{display:'flex',flexGrow:1,flexBasis:0}}>
               <PersonIcon />
               <Typography >{row.name}</Typography>
             </div>
             <div style={{display:'flex',flexGrow:1,flexBasis:0}}>
               <ThumbUpAltIcon />
-              <Typography>{row.like}</Typography>
+              <Typography>{row.likes}</Typography>
             </div>
             <div style={{display:'flex',flexGrow:1,flexBasis:0}}>
               <CommentIcon />
@@ -66,12 +66,12 @@ function Row(rows) {
   
               <Table size="small" aria-label="comments">
                 <TableBody>
-                  {row.history.map((historyRow) => (
+                  {row.history!=null ? row.history.map((historyRow) => (
                     <div style={{display:'flex', flexGrow:5,flexBasis:0 , minWidth:'parent'}}>
                       <Typography variant="caption" style={{flexGrow:2,flexBasis:0}}>{historyRow.name}</Typography>
                       <Typography variant="caption" style={{flexGrow:3,flexBasis:0}}>{historyRow.comment}</Typography>
                     </div>
-                  ))}
+                  )) : <></>}
                   <div style={{display:'flex',flexGrow:1,flexBasis:0}}>
                     <Button onClick={() => setOpen_reply(!openReply)}>
                       댓글쓰기
