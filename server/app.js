@@ -1,3 +1,4 @@
+const fs = require('fs');
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
@@ -27,21 +28,54 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+//const data = fs.readFileSync("./lib/pool.js");
+//var conf = JSON.parse(data);
+//var mysql = require('mysql');
+
+//pool.connect();
+
+//pool.connection.connet();
+const router = express.Router();
+
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
-app.get('/NoticePage', async(req, res) =>{
+/*
+app.get('/', (req, res, next) => {
+  //var connect;
+  pool.getConnection()
+  .then((connect) => {
+    return connect.query('SELECT * FROM notice');
+  }).then((r) => { 
+    res.json(r); 
+  }).catch((e) => {
+    res.json(e);
+  });
+});
+*/
+
+app.get('/NoticePage', async (req, res, next) => {
   try {
     const connect = await pool.getConnection();
-    const r = await connect.query('SELECT * FROM notice');
+    const row = await connect.query('SELECT * FROM notice;');
     connect.release();
-    
-    res.send(res.json(r));
+    res.json(row);
   }
   catch(e) {
-    res.send(res.json(e));
+    res.json(e);
   }
 });
+
+/*
+app.get('/NoticePage', (req, res) => { //클라이언트가 해당 경로에 접속하게 될 때 
+  pool.promise().query("SELECT * FROM notice")
+  .then( ([rows, fields]) => { 
+    res.send(rows); 
+  })
+});
+*/
+
+//    const [rows, fields] = await pool.query("SELECT * FROM notice");
 
 
 // catch 404 and forward to error handler

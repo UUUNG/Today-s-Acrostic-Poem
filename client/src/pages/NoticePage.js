@@ -15,6 +15,7 @@ import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import LastPageIcon from '@material-ui/icons/LastPage';
 import GridHead from '../components/molecules/GridHead';
+import { useEffect } from 'react';
 
 const useStyles1 = makeStyles((theme) => ({
   root: {
@@ -81,10 +82,6 @@ TablePaginationActions.propTypes = {
   rowsPerPage: PropTypes.number.isRequired,
 };
 
-function createData(title, writer, date) {
-  return { title, writer, date };
-}
-
 const useStyles2 = makeStyles((theme)=>({
   table: {
     minWidth: 500,
@@ -97,24 +94,10 @@ const useStyles2 = makeStyles((theme)=>({
 export default function NoticePage() {
   const classes = useStyles2();
   const [page, setPage] = React.useState(0);
-  const [rowsPerPage, setRowsPerPage] = React.useState(3);
-  const [notice, setNotice]=React.useState(null);
-  
-  const [emptyRows, setEmptyRows] = React.useState(0);
-   /* 서버에서 데이터 가져오기 */
-  const callApi = async()=>{
-    const res = await fetch('http://localhost:3000/NoticePage');
-    const body = await res.json();
-    return body;
-  }
+  const [rowsPerPage, setRowsPerPage] = React.useState(5);
+  const [notice, setNotice]=React.useState(0)
 
-  useEffect(
-    ()=>{
-      callApi()
-      .then(data => setNotice(data[0]))
-      .catch(err => console.log(err));
-    }
-  );
+  const emptyRows = rowsPerPage - Math.min(rowsPerPage, notice.length - page * rowsPerPage);
 
   useEffect(
     ()=>{
@@ -134,40 +117,49 @@ export default function NoticePage() {
     setPage(0);
   };
 
- 
+  const callApi = async()=>{
+    const response = await fetch('/NoticePage');
+    const body = await response.json();
+    return body;
+  }
 
-  /* const emptyRows = rowsPerPage - Math.min(rowsPerPage, notice.length - page * rowsPerPage); */
+  useEffect(()=>{
+      callApi()
+      .then(res=>setNotice(res[0]))
+      .catch(err=>console.log(err));
+  }, [page]);
+
   return (
     <div>
       <div className={classes.heroContent}>
         <GridHead name="공지사항" description=" "/>
       </div>
-      {notice ? 
+      
       <TableContainer component={Paper}>
         <Table className={classes.table} aria-label="custom pagination table">
           <TableBody>
-            {(rowsPerPage > 0
-              ? notice.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage) 
+          {notice ? ((rowsPerPage > 0
+              ? notice.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               : notice
-            ).map((row) => (
-              <TableRow key={row.title}>
+            ).map((notice) => (
+              <TableRow key={notice.title}>
                 <TableCell component="th" scope="row">
-                  {row.title}
+                  {notice.title}
                 </TableCell>
                 <TableCell style={{ width: 160 }} align="right">
-                  {row.writer}
+                  {notice.writer}
                 </TableCell>
                 <TableCell style={{ width: 160 }} align="right">
-                  {row.date}
+                  {notice.date}
                 </TableCell>
               </TableRow>
-            ))}
-
+             ))) : ""}
             {emptyRows > 0 && (
               <TableRow style={{ height: 53 * emptyRows }}>
                 <TableCell colSpan={6} />
               </TableRow>
             )}
+           
           </TableBody>
           <TableFooter>
             <TableRow>
