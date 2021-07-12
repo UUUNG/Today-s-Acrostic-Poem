@@ -10,6 +10,8 @@ var usersRouter = require('./routes/users');
 var app = express();
 var cors = require("cors")
 
+var mysql = require('mysql');
+
 var pool = require("./lib/pool")
 
 console.log(pool)
@@ -21,13 +23,25 @@ app.set('view engine', 'pug');
 app.use(logger('dev'));
 app.use(cors())
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
+app.get('/NoticePage', async(req, res) =>{
+  try {
+    const connect = await pool.getConnection();
+    const r = await connect.query('SELECT * FROM notice');
+    connect.release();
+    
+    res.send(res.json(r));
+  }
+  catch(e) {
+    res.send(res.json(e));
+  }
+});
 
 
 // catch 404 and forward to error handler
@@ -45,5 +59,8 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
+
+
 
 module.exports = app;
