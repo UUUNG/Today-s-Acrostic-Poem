@@ -10,6 +10,7 @@ import GridHead from '../molecules/GridHead';
 import CheckIcon from '@material-ui/icons/Check';
 import Button from '@material-ui/core/Button';
 import Row from '../molecules/Row'
+import dayjs from 'dayjs'
 
 function createData(word, name, likes,comment) {
   return {
@@ -72,8 +73,8 @@ const useStyles = makeStyles((theme) => ({
 const RankingContainer = () => {
   const classes = useStyles();
   const [sorting, setSorting] = React.useState('주간');
-  const [rankData, setRankData]=React.useState(weeklyRows);
-  const [monthlylist, setMonthlyList]=React.useState(0);
+  const [rankData, setRankData] = React.useState(weeklyRows);
+  const [monthlylist, setMonthlyList] = React.useState([]);
 
   const callApi = async()=>{
     const response = await fetch('/RankingPageMonth');
@@ -83,7 +84,10 @@ const RankingContainer = () => {
 
   useEffect(()=>{
       callApi()
-      .then(res=>setMonthlyList(res[0]))
+      .then(res=>{
+        console.log(res)
+        setMonthlyList(res.data)
+      })
       .catch(err=>console.log(err));
 
   }, []);
@@ -115,7 +119,7 @@ const RankingContainer = () => {
       <div className={classes.heroContent}>
         <GridHead name="주간/월간/연간랭킹" description="주간/월간/연간별 랭킹을 보여줍니다."/>
       </div>
-      {monthlylist? <div>{monthlylist[0].created}</div> : <div></div>}
+      {monthlylist.length > 0 && <div>{dayjs(monthlylist[0].created).format("YYYY년 MM월 DD일 HH:mm:ss")}</div>}
       <Box flexDirection="row" style={{display: 'inline-flex'}}>
         <Button onClick={() => handleSortingClick('주간')}>
           {sorting=== '주간' ? <CheckedButton check={'주간'}/> : '주간' } 
@@ -131,8 +135,8 @@ const RankingContainer = () => {
       <TableContainer component={Paper}>
         <Table aria-label="Ranking table">
           <TableBody>
-            {rankData.map((row) => (
-              <Row key={row.name} row={row} />
+            {monthlylist.map((row, idx) => (
+              <Row key={idx} row={row} />
             ))}
           </TableBody>
         </Table>

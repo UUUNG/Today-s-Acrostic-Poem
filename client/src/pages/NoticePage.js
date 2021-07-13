@@ -116,8 +116,12 @@ export default function NoticePage() {
 
   useEffect(()=>{
       callApi()
-      .then(res=>setNotice(res[0]))
-      .catch(err=>console.log(err));
+      .then(res => {
+        setNotice(res.data)
+      })
+      .catch(err=>{
+        console.log(err)
+      });
   }, [page]);
 
   return (
