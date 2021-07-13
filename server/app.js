@@ -13,8 +13,6 @@ var cors = require("cors")
 
 var pool = require("./lib/pool")
 
-console.log(pool)
-
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
@@ -63,16 +61,79 @@ app.get('/NoticePage', async (req, res, next) => {
     res.json(e);
   }
 });
+//데이터의 Insert나 Update 시에는 query가 아닌 execute를 사용
+app.get('/NoticePage', async (req, res, next) => {
+  try {
+    const result = await pool.query('SELECT * FROM notice;')
+    console.log(result[0])
+    res.json({ code: 200, result: "success", data : result[0] });
+  }
+  catch(e) {
+    res.json({ code: 500, result: "error", message: e.message });
+  }
+});
+//path 는 영어만 인식합니다. RANKINGPAGEMONTHREPLY
+app.get('/RankingPageMonthREPLY/:id', async (req, res, next) => {
+  const { id } = req.params;
+  try {
+    const sql=`
+      SELECT 
+        REPLY.name as reply_name, 
+        REPLY.reply as reply_re , 
+        REPLY.likes as reply_likes
+      FROM REPLY 
+      LEFT JOIN POEM 
+      ON REPLY.poemID = POEM.poemID 
+      WHERE REPLY.poemId = ?
+    `
+    const result = await pool.query(sql, [
+      id
+    ])
+    //sql injection 공격을 막기 위함
+    res.json({ code: 200, result: "success", data : result[0] });
+  }
+  catch(e) {
+    res.json({ code: 500, result: "error", message: e.message });
+  }
+});
 
 app.get('/RankingPageMonth', async (req, res, next) => {
   try {
-    const connect = await pool.getConnection();
-    const row = await connect.query('SELECT * FROM project1.POEM WHERE created > "2021-07" AND created<"2021-08" order by likes desc');
-    connect.release();
-    res.json(row);
+    const sqlPoem = `
+      SELECT * 
+      FROM POEM 
+      WHERE created > "2021-07" 
+      AND created < "2021-08" 
+      ORDER BY likes desc
+    `
+    const resultPoem = await pool.query(sqlPoem);
+    
+    let poems = resultPoem[0];
+    let idx = 0;
+
+    for(const poem of resultPoem[0]){
+      const sqlReply = `
+        SELECT * 
+        FROM REPLY
+        WHERE REPLY.poemId = ?
+      `
+
+      const resultReply = await pool.query(sqlReply, [
+        poem.poemId
+      ])
+      
+      poems[idx]["replyList"] = resultReply[0]
+
+      idx += 1;
+    }
+
+    console.log(poems)
+
+    res.json({ code: 200, result: "success", data : poems });
   }
   catch(e) {
-    res.json(e);
+    console.log(e)
+    res.json({ code: 500, result: "error", message: e.message });
   }
 });
 
