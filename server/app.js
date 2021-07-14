@@ -50,6 +50,84 @@ app.get('/', (req, res, next) => {
 });
 */
 
+app.get('/MainLike', async (req, res, next) => {
+  try {
+    const sqlPoem = `
+      SELECT * 
+      FROM POEM 
+      WHERE DATE_FORMAT(created, "%Y-%m-%d")=current_date()
+      ORDER BY likes desc
+    `
+    const resultPoem = await pool.query(sqlPoem);
+    
+    let poems = resultPoem[0];
+    let idx = 0;
+
+    for(const poem of resultPoem[0]){
+      const sqlReply = `
+        SELECT * 
+        FROM REPLY
+        WHERE REPLY.poemId = ?
+      `
+
+      const resultReply = await pool.query(sqlReply, [
+        poem.poemId
+      ])
+      
+      poems[idx]["replyList"] = resultReply[0]
+
+      idx += 1;
+    }
+
+    console.log(poems)
+
+    res.json({ code: 200, result: "success", data : poems });
+  }
+  catch(e) {
+    console.log(e)
+    res.json({ code: 500, result: "error", message: e.message });
+  }
+});
+
+app.get('/MainLatest', async (req, res, next) => {
+  try {
+    const sqlPoem = `
+      SELECT * 
+      FROM POEM 
+      WHERE DATE_FORMAT(created, "%Y-%m-%d")=current_date()
+      ORDER BY created desc
+    `
+    const resultPoem = await pool.query(sqlPoem);
+    
+    let poems = resultPoem[0];
+    let idx = 0;
+
+    for(const poem of resultPoem[0]){
+      const sqlReply = `
+        SELECT * 
+        FROM REPLY
+        WHERE REPLY.poemId = ?
+      `
+
+      const resultReply = await pool.query(sqlReply, [
+        poem.poemId
+      ])
+      
+      poems[idx]["replyList"] = resultReply[0]
+
+      idx += 1;
+    }
+
+    console.log(poems)
+
+    res.json({ code: 200, result: "success", data : poems });
+  }
+  catch(e) {
+    console.log(e)
+    res.json({ code: 500, result: "error", message: e.message });
+  }
+});
+
 app.get('/NoticePage', async (req, res, next) => {
   try {
     const connect = await pool.getConnection();
