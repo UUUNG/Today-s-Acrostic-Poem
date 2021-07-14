@@ -13,6 +13,7 @@ import CommentIcon from '@material-ui/icons/Comment';
 import ShareIcon from '@material-ui/icons/Share';
 import Button from '@material-ui/core/Button'
 import TextField from '@material-ui/core/TextField'
+import dayjs from 'dayjs';
 
 const useRowStyles = makeStyles({
     root: {
@@ -22,8 +23,8 @@ const useRowStyles = makeStyles({
     },
   });
   
-function Row(rows) {
-    const { row } = rows;
+function Row({ row }) {
+    console.log(row)
     const [open, setOpen] = React.useState(false);
     const classes = useRowStyles();
     const [openReply, setOpen_reply] = React.useState(false);
@@ -33,14 +34,14 @@ function Row(rows) {
         <Paper variant="outlined" square style={{display:'flex', flexDirection:'column',flexGrow:5,flexBasis:0}}>
         <TableRow className={classes.root} onClick={() => setOpen(!open)}>
           <div style={{display:'flex', flexGrow:5,flexBasis:0}}>
-            <Typography style={{flexGrow:2,flexBasis:0}}>{row.keyword}</Typography>
+            <Typography style={{flexGrow:2,flexBasis:0}}>{row.word}</Typography>
             <div style={{display:'flex',flexGrow:1,flexBasis:0}}>
               <PersonIcon />
               <Typography >{row.name}</Typography>
             </div>
             <div style={{display:'flex',flexGrow:1,flexBasis:0}}>
               <ThumbUpAltIcon />
-              <Typography>{row.like}</Typography>
+              <Typography>{row.likes}</Typography>
             </div>
             <div style={{display:'flex',flexGrow:1,flexBasis:0}}>
               <CommentIcon />
@@ -55,7 +56,13 @@ function Row(rows) {
             <Box margin={3}>
               <Paper variant="outlined" square style={{padding:10}}>
                 <Typography variant="caption" gutterBottom component="div">
-                  바나나 나랑 나눠먹자
+                  {row.poem_1}
+                </Typography>
+                <Typography variant="caption" gutterBottom component="div">
+                  {row.poem_2}
+                </Typography>
+                <Typography variant="caption" gutterBottom component="div">
+                  {row.poem_3}
                 </Typography>
                 <div style={{display:'flex',justifyContent:'center'}}>
                   <Typography variant="caption" >공유하기</Typography>
@@ -66,10 +73,13 @@ function Row(rows) {
   
               <Table size="small" aria-label="comments">
                 <TableBody>
-                  {row.history.map((historyRow) => (
-                    <div style={{display:'flex', flexGrow:5,flexBasis:0 , minWidth:'parent'}}>
-                      <Typography variant="caption" style={{flexGrow:2,flexBasis:0}}>{historyRow.name}</Typography>
-                      <Typography variant="caption" style={{flexGrow:3,flexBasis:0}}>{historyRow.comment}</Typography>
+                  {row.replyList && row.replyList.map((historyRow, idx) => (
+                    <div style={{padding: 10}}>
+                      <div style={{display:'flex'}}>
+                        <Typography style={{fontSize: 12, marginRight: 10}}>{historyRow.name}</Typography>
+                        <Typography style={{fontSize: 12, color:'#888'}}>{dayjs(historyRow.created).format("MM.DD HH:mm")}</Typography>
+                      </div>
+                      <Typography style={{fontSize: 14}}>{historyRow.reply}</Typography>
                     </div>
                   ))}
                   <div style={{display:'flex',flexGrow:1,flexBasis:0}}>
@@ -95,4 +105,3 @@ function Row(rows) {
   }
 
   export default Row;
-  

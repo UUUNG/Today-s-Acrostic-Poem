@@ -1,4 +1,5 @@
 import './App.css';
+import React from 'react';
 import NoticePage from './pages/NoticePage';
 import MainPage from './pages/MainPage';
 import HOFPage from './pages/HOFPage';
@@ -7,7 +8,6 @@ import {BrowserRouter,Switch,Route} from "react-router-dom";
 import HeadContainer from './components/organisms/HeadContainer';
 
 function App() {
-
   return (
     <div>
       <HeadContainer />
