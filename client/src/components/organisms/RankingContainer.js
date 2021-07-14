@@ -4,12 +4,25 @@ import Box from '@material-ui/core/Box';
 import PropTypes from 'prop-types';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
+import TableRow from '@material-ui/core/TableRow';
 import TableContainer from '@material-ui/core/TableContainer';
 import Paper from '@material-ui/core/Paper';
 import GridHead from '../molecules/GridHead';
+import Collapse from '@material-ui/core/Collapse';
+import TextField from '@material-ui/core/TextField';
+
+import PersonIcon from '@material-ui/icons/Person';
+import ThumbUpAltIcon from '@material-ui/icons/ThumbUpAlt';
 import CheckIcon from '@material-ui/icons/Check';
+import CommentIcon from '@material-ui/icons/Comment';
+import ShareIcon from '@material-ui/icons/Share';
+
 import Button from '@material-ui/core/Button';
 import Row from '../molecules/Row'
+import Typography from '@material-ui/core/Typography';
+
+import Reple from '../molecules/Reple'
+import ReplyRow from '../molecules/ReplyRow'
 
 function createData(word, name, likes,comment) {
   return {
@@ -69,11 +82,15 @@ const useStyles = makeStyles((theme) => ({
   
 }));
 
-const RankingContainer = () => {
+const RankingContainer = (props) => {
   const classes = useStyles();
   const [sorting, setSorting] = React.useState('주간');
-  const [rankData, setRankData]=React.useState(weeklyRows);
+  const rankData = React.useState(props);
+  const [replyData, setReplyData]=React.useState(null);
   const [monthlylist, setMonthlyList]=React.useState(0);
+  const [open, setOpen] = React.useState(false);
+  const [openReply, setOpen_reply] = React.useState(false);
+
 
   const callApi = async()=>{
     const response = await fetch('/RankingPageMonth');
@@ -85,7 +102,6 @@ const RankingContainer = () => {
       callApi()
       .then(res=>setMonthlyList(res[0]))
       .catch(err=>console.log(err));
-
   }, []);
 
   const handleSortingClick = (category) => {
@@ -93,16 +109,16 @@ const RankingContainer = () => {
   };
 
   const CheckedButton = ({check}) => {
-    if(check === '주간'){
-      setRankData(weeklyRows)
+    if(check === '주간' && monthlylist!=null){
+      setReplyData(monthlylist)
     }
     else if(check === '월간'&& monthlylist!=null){
-      setRankData(monthlylist)
+      setReplyData(monthlylist)
     }
-    else if(check === '연간'){
-      setRankData(yearlyRows)
+    else if(check === '연간' && monthlylist!=null){
+      setReplyData(monthlylist)
     }
-  
+    console.log("replyData", {replyData});
     return(
       <>
         <CheckIcon/>
@@ -131,9 +147,78 @@ const RankingContainer = () => {
       <TableContainer component={Paper}>
         <Table aria-label="Ranking table">
           <TableBody>
-            {rankData.map((row) => (
-              <Row key={row.name} row={row} />
-            ))}
+          {rankData[0]['props'] ? rankData[0]['props'].map((row) => (
+            <React.Fragment>
+              <Paper variant="outlined" square style={{display:'flex', flexDirection:'column',flexGrow:5,flexBasis:0}}>
+              {/* {rankData[0]['props'] ? rankData[0]['props'].map((row) => ( */}
+                <TableRow className={classes.root} onClick={() => setOpen(!open)}>
+                    <div style={{display:'flex', flexGrow:5,flexBasis:0}}>
+                      <Typography style={{flexGrow:2,flexBasis:0}}>{row.word}</Typography>
+                      <div style={{display:'flex',flexGrow:1,flexBasis:0}}>
+                        <PersonIcon />
+                        <Typography >{row.name}</Typography>
+                      </div>
+                      <div style={{display:'flex',flexGrow:1,flexBasis:0}}>
+                        <ThumbUpAltIcon />
+                        <Typography>{row.likes}</Typography>
+                      </div>
+                      <div style={{display:'flex',flexGrow:1,flexBasis:0}}>
+                        <CommentIcon />
+                        <Typography>{row.comment}</Typography>
+                      </div>
+                    </div>
+                </TableRow>
+            {/*   )) : <div></div>
+              } */}
+        
+              <TableRow>
+                <Collapse in={open} timeout="auto" unmountOnExit>
+                  <Box margin={3}>
+                    <Paper variant="outlined" square style={{padding:10}}>
+                      <Typography variant="caption" gutterBottom component="div">
+                        바나나 나랑 나눠먹자
+                      </Typography>
+                      <div style={{display:'flex',justifyContent:'center'}}>
+                        <Typography variant="caption" >공유하기</Typography>
+                        <ShareIcon fontSize="small"/>
+                      </div>
+                      
+                    </Paper>
+                    <Table size="small" aria-label="comments">
+                      <TableBody>
+                        <div style={{display:'flex', flexGrow:5,flexBasis:0 , minWidth:'parent'}}>
+                          <ReplyRow replyDatas={replyData}></ReplyRow>
+                        </div>
+                        <div style={{display:'flex',flexGrow:1,flexBasis:0}}>
+                          <Button onClick={() => setOpen_reply(!openReply)}>
+                            댓글쓰기
+                          </Button>
+                        </div>
+                          <Collapse in={openReply} timeout="auto" unmountOnExit>
+                            <div style={{ margin:5,display:'flex', flexDirection:'row'}}>
+                              <TextField required id="standard-required"  defaultValue="닉네임"/>
+                              <TextField required id="standard-required"  defaultValue="비밀번호" />
+                              <TextField required id="standard-required"  defaultValue="내용" />
+                            </div>
+                        </Collapse>
+                      </TableBody>
+                    </Table>
+                   {/*  {replyData ? replyData.map((reple_row) => (
+                      <div>
+                        {reple_row ? <Table>
+                        <Reple key={reple_row.name} reple_rows={reple_row}></Reple>
+                        </Table> : <></>}
+                      </div>
+                    )) : <></>
+                    } */}
+                    {/* <Reple rows={row}></Reple> */}
+                  </Box>
+                </Collapse>
+              </TableRow>
+              </Paper>
+            </React.Fragment>
+          )) : <div></div>
+          }
           </TableBody>
         </Table>
       </TableContainer>

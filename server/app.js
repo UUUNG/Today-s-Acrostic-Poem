@@ -69,7 +69,19 @@ app.get('/NoticePage', async (req, res, next) => {
 app.get('/RankingPageMonth', async (req, res, next) => {
   try {
     const connect = await pool.getConnection();
-    const row = await connect.query('SELECT * FROM project1.POEM WHERE created > "2021-07" AND created<"2021-08" order by likes desc');
+    const row = await connect.query('SELECT * FROM project1.REPLY');
+    connect.release();
+    res.json(row);
+  }
+  catch(e) {
+    res.json(e);
+  }
+});
+
+app.get('/RankingPage', async (req, res, next) => {
+  try {
+    const connect = await pool.getConnection();
+    const row = await connect.query('SELECT * FROM project1.POEM');
     connect.release();
     res.json(row);
   }

@@ -13,6 +13,7 @@ import CommentIcon from '@material-ui/icons/Comment';
 import ShareIcon from '@material-ui/icons/Share';
 import Button from '@material-ui/core/Button'
 import TextField from '@material-ui/core/TextField'
+import Reple from './Reple';
 
 const useRowStyles = makeStyles({
     root: {
@@ -60,32 +61,12 @@ function Row(rows) {
                 <div style={{display:'flex',justifyContent:'center'}}>
                   <Typography variant="caption" >공유하기</Typography>
                   <ShareIcon fontSize="small"/>
+                  96
                 </div>
                 
               </Paper>
   
-              <Table size="small" aria-label="comments">
-                <TableBody>
-                  {row.history!=null ? row.history.map((historyRow) => (
-                    <div style={{display:'flex', flexGrow:5,flexBasis:0 , minWidth:'parent'}}>
-                      <Typography variant="caption" style={{flexGrow:2,flexBasis:0}}>{historyRow.name}</Typography>
-                      <Typography variant="caption" style={{flexGrow:3,flexBasis:0}}>{historyRow.comment}</Typography>
-                    </div>
-                  )) : <></>}
-                  <div style={{display:'flex',flexGrow:1,flexBasis:0}}>
-                    <Button onClick={() => setOpen_reply(!openReply)}>
-                      댓글쓰기
-                    </Button>
-                  </div>
-                    <Collapse in={openReply} timeout="auto" unmountOnExit>
-                      <div style={{ margin:5,display:'flex', flexDirection:'row'}}>
-                        <TextField required id="standard-required"  defaultValue="닉네임"/>
-                        <TextField required id="standard-required"  defaultValue="비밀번호" />
-                        <TextField required id="standard-required"  defaultValue="내용" />
-                      </div>
-                  </Collapse>
-                </TableBody>
-              </Table>
+              {/* <Reple rows={row}></Reple> */}
             </Box>
           </Collapse>
         </TableRow>

@@ -1,4 +1,4 @@
-import React,{useEffect} from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
@@ -99,15 +99,6 @@ export default function NoticePage() {
 
   const emptyRows = rowsPerPage - Math.min(rowsPerPage, notice.length - page * rowsPerPage);
 
-  useEffect(
-    ()=>{
-      if (notice !== null){
-        var emptyRows = rowsPerPage - Math.min(rowsPerPage, notice.length - page * rowsPerPage)
-        setEmptyRows(emptyRows);
-      }
-    }, [notice]
-  );
- 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -180,8 +171,7 @@ export default function NoticePage() {
             </TableRow>
           </TableFooter>
         </Table>
-      </TableContainer> : <div> </div>}
-      
+      </TableContainer>
     </div>
   );
 }
