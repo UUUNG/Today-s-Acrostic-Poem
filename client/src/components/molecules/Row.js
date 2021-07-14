@@ -105,4 +105,3 @@ function Row({ row }) {
   }
 
   export default Row;
-  

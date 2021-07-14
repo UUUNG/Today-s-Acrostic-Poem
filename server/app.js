@@ -11,6 +11,8 @@ var usersRouter = require('./routes/users');
 var app = express();
 var cors = require("cors")
 
+var mysql = require('mysql');
+
 var pool = require("./lib/pool")
 
 // view engine setup
@@ -20,7 +22,7 @@ app.set('view engine', 'pug');
 app.use(logger('dev'));
 app.use(cors())
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -50,6 +52,7 @@ app.get('/', (req, res, next) => {
 });
 */
 
+<<<<<<< HEAD
 app.get('/MainLike', async (req, res, next) => {
   try {
     const sqlPoem = `
@@ -139,6 +142,8 @@ app.get('/NoticePage', async (req, res, next) => {
     res.json(e);
   }
 });
+=======
+>>>>>>> 01f204d32f2188c79fc0f1522a87f9d19203bcf6
 //데이터의 Insert나 Update 시에는 query가 아닌 execute를 사용
 app.get('/NoticePage', async (req, res, next) => {
   try {
@@ -292,6 +297,27 @@ app.get('/RankingYearly', async (req, res, next) => {
   }
 });
 
+app.get('/HOFPage', async (req, res, next) => {
+  try {
+    const sqlHof = `
+      SELECT * 
+      FROM hof
+    `
+    const resultHof = await pool.query(sqlHof);
+    
+    let hofs = resultHof[0];
+    let idx = 0;
+
+    console.log(hofs)
+
+    res.json({ code: 200, result: "success", data : hofs });
+  }
+  catch(e) {
+    console.log(e)
+    res.json({ code: 500, result: "error", message: e.message });
+  }
+});
+
 /*
 app.get('/NoticePage', (req, res) => { //클라이언트가 해당 경로에 접속하게 될 때 
   pool.promise().query("SELECT * FROM notice")
@@ -319,5 +345,8 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
+
+
 
 module.exports = app;
