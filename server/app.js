@@ -52,7 +52,6 @@ app.get('/', (req, res, next) => {
 });
 */
 
-<<<<<<< HEAD
 app.get('/MainLike', async (req, res, next) => {
   try {
     const sqlPoem = `
@@ -142,8 +141,6 @@ app.get('/NoticePage', async (req, res, next) => {
     res.json(e);
   }
 });
-=======
->>>>>>> 01f204d32f2188c79fc0f1522a87f9d19203bcf6
 //데이터의 Insert나 Update 시에는 query가 아닌 execute를 사용
 app.get('/NoticePage', async (req, res, next) => {
   try {
