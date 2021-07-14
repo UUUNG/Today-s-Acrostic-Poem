@@ -9,25 +9,10 @@ import Paper from '@material-ui/core/Paper';
 import Row from '../molecules/Row';
 import CheckIcon from '@material-ui/icons/Check';
 
-const likeRows = [
-  {'word':'복숭아','name':'피구피규','likes':37,'comment':10, 'replyList':[{name:'피구피규',comment:'ㅋㅋㅋd아 개웃기네'},{ name: '뇽뇽', comment: '이게 왜 랭킹? ㄵ' },]},
-  {'word':'김다은','name':'이부','likes':33,'comment':12,'replyList':[{name:'피구피규',comment:'ㅋㅋㅋd아 개웃기네'},{ name: '뇽뇽', comment: '이게 왜 랭킹? ㄵ' },]},
-  {'word':'최재웅','name':'숨겨진트롤','likes':23,'comment':3,'replyList':[{name:'피구피규',comment:'ㅋㅋㅋd아 개웃기네'},{ name: '뇽뇽', comment: '이게 왜 랭킹? ㄵ' },]},
-  {'word':'한승우','name':'피피융신','likes':17,'comment':5,'replyList':[{name:'피구피규',comment:'ㅋㅋㅋd아 개웃기네'},{ name: '뇽뇽', comment: '이게 왜 랭킹? ㄵ' },]},
-];
-
-const recentRows = [
-  {'word':'복숭아','name':'피구피규','likes':37,'comment':10, 'replyList':[{name:'피구피규',comment:'ㅋㅋㅋd아 개웃기네'},{ name: '뇽뇽', comment: '이게 왜 랭킹? ㄵ' },]},
-  {'word':'김다은','name':'이부','likes':33,'comment':12,'replyList':[{name:'피구피규',comment:'ㅋㅋㅋd아 개웃기네'},{ name: '뇽뇽', comment: '이게 왜 랭킹? ㄵ' },]},
-  {'word':'최재웅','name':'숨겨진트롤','likes':23,'comment':3,'replyList':[{name:'피구피규',comment:'ㅋㅋㅋd아 개웃기네'},{ name: '뇽뇽', comment: '이게 왜 랭킹? ㄵ' },]},
-  {'word':'한승우','name':'피피융신','likes':17,'comment':5,'replyList':[{name:'피구피규',comment:'ㅋㅋㅋd아 개웃기네'},{ name: '뇽뇽', comment: '이게 왜 랭킹? ㄵ' },]},
-];
-
-
 const PoemListContainer = () => {
 
   const [sorting, setSorting] = React.useState('실시간 좋아요순');
-  const [displayData, setDisplayData]=React.useState(likeRows);
+  const [displayData, setDisplayData]=React.useState([]);
   const [likeList, setLikeList] = React.useState([]);
   const [latestList, setLatestList] = React.useState([]);
 

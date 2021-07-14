@@ -130,17 +130,6 @@ app.get('/MainLatest', async (req, res, next) => {
   }
 });
 
-app.get('/NoticePage', async (req, res, next) => {
-  try {
-    const connect = await pool.getConnection();
-    const row = await connect.query('SELECT * FROM notice;');
-    connect.release();
-    res.json(row);
-  }
-  catch(e) {
-    res.json(e);
-  }
-});
 //데이터의 Insert나 Update 시에는 query가 아닌 execute를 사용
 app.get('/NoticePage', async (req, res, next) => {
   try {
@@ -243,13 +232,6 @@ app.get('/RankingMonthly', async (req, res, next) => {
       
       poems[idx]["replyList"] = resultReply[0]
 
-
-      const resultReply = await pool.query(sqlReply, [
-        poem.poemId
-      ])
-      
-      poems[idx]["replyList"] = resultReply[0]
-
       idx += 1;
     }
 
@@ -322,18 +304,6 @@ app.get('/HOFPage', async (req, res, next) => {
     res.json({ code: 500, result: "error", message: e.message });
   }
 });
-
-/*
-app.get('/NoticePage', (req, res) => { //클라이언트가 해당 경로에 접속하게 될 때 
-  pool.promise().query("SELECT * FROM notice")
-  .then( ([rows, fields]) => { 
-    res.send(rows); 
-  })
-});
-*/
-
-//    const [rows, fields] = await pool.query("SELECT * FROM notice");
-
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
