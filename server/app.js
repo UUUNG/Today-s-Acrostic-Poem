@@ -183,6 +183,7 @@ app.get('/RankingWeekly', async (req, res, next) => {
       SELECT * 
       FROM POEM 
       WHERE YEARWEEK(created) = YEARWEEK(now())
+      WHERE DATE_FORMAT(created, '%m')=MONTH(current_date())
       ORDER BY likes desc
     `
     const resultPoem = await pool.query(sqlPoem);
@@ -235,6 +236,13 @@ app.get('/RankingMonthly', async (req, res, next) => {
         FROM REPLY
         WHERE REPLY.poemId = ?
       `
+
+      const resultReply = await pool.query(sqlReply, [
+        poem.poemId
+      ])
+      
+      poems[idx]["replyList"] = resultReply[0]
+
 
       const resultReply = await pool.query(sqlReply, [
         poem.poemId

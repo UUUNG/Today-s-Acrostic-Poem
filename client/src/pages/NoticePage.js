@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useEffect} from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
@@ -15,7 +15,7 @@ import KeyboardArrowLeft from '@material-ui/icons/KeyboardArrowLeft';
 import KeyboardArrowRight from '@material-ui/icons/KeyboardArrowRight';
 import LastPageIcon from '@material-ui/icons/LastPage';
 import GridHead from '../components/molecules/GridHead';
-import { useEffect } from 'react';
+import dayjs from 'dayjs'
 
 const useStyles1 = makeStyles((theme) => ({
   root: {
@@ -96,9 +96,8 @@ export default function NoticePage() {
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [notice, setNotice]=React.useState(0)
-
-  const emptyRows = rowsPerPage - Math.min(rowsPerPage, notice.length - page * rowsPerPage);
-
+  var emptyRows = 0;
+  
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
@@ -117,13 +116,16 @@ export default function NoticePage() {
   useEffect(()=>{
       callApi()
       .then(res => {
-        setNotice(res.data)
+        setNotice(res[0])
       })
       .catch(err=>{
         console.log(err)
       });
   }, [page]);
-
+  if (notice) {
+    emptyRows = rowsPerPage - Math.min(rowsPerPage, notice.length - page * rowsPerPage);
+  }
+  
   return (
     <div>
       <div className={classes.heroContent}>
@@ -134,7 +136,7 @@ export default function NoticePage() {
         <Table className={classes.table} aria-label="custom pagination table">
           <TableBody>
           {notice ? ((rowsPerPage > 0
-              ? notice.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+              ? notice.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage) 
               : notice
             ).map((notice) => (
               <TableRow key={notice.title}>
@@ -145,16 +147,16 @@ export default function NoticePage() {
                   {notice.writer}
                 </TableCell>
                 <TableCell style={{ width: 160 }} align="right">
-                  {notice.date}
+                <div>{dayjs(notice.date).format("YYYY년 MM월 DD일 HH:mm:ss")}</div>
                 </TableCell>
               </TableRow>
              ))) : ""}
-            {emptyRows > 0 && (
+            {notice && 
+              emptyRows > 0 && (
               <TableRow style={{ height: 53 * emptyRows }}>
                 <TableCell colSpan={6} />
               </TableRow>
-            )}
-           
+            )} 
           </TableBody>
           <TableFooter>
             <TableRow>
