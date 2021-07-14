@@ -73,23 +73,53 @@ const useStyles = makeStyles((theme) => ({
 const RankingContainer = () => {
   const classes = useStyles();
   const [sorting, setSorting] = React.useState('주간');
-  const [rankData, setRankData] = React.useState(weeklyRows);
+  const [rankData, setRankData] = React.useState([]);
+  const [Weeklylist, setWeeklyList] = React.useState([]);
   const [monthlylist, setMonthlyList] = React.useState([]);
+  const [yearlylist, setYearlyList] = React.useState([]);
 
-  const callApi = async()=>{
-    const response = await fetch('/RankingPageMonth');
+  const callWeeklyApi = async()=>{
+    const response = await fetch('/RankingWeekly');
+    const body = await response.json();
+    return body;
+  }
+
+  const callMonthlyApi = async()=>{
+    const response = await fetch('/RankingMonthly');
+    const body = await response.json();
+    return body;
+  }
+
+  const callYearlyApi = async()=>{
+    const response = await fetch('/RankingYearly');
     const body = await response.json();
     return body;
   }
 
   useEffect(()=>{
-      callApi()
+
+      callWeeklyApi()
+      .then(res=>{
+        console.log(res)
+        setWeeklyList(res.data)
+      })
+      .catch(err=>console.log(err));
+
+      callMonthlyApi()
       .then(res=>{
         console.log(res)
         setMonthlyList(res.data)
       })
       .catch(err=>console.log(err));
 
+      callYearlyApi()
+      .then(res=>{
+        console.log(res)
+        setYearlyList(res.data)
+      })
+      .catch(err=>console.log(err));
+
+      setRankData(Weeklylist);
   }, []);
 
   const handleSortingClick = (category) => {
@@ -97,14 +127,14 @@ const RankingContainer = () => {
   };
 
   const CheckedButton = ({check}) => {
-    if(check === '주간'){
-      setRankData(weeklyRows)
+    if(check === '주간'&& Weeklylist!=null){
+      setRankData(Weeklylist)
     }
     else if(check === '월간'&& monthlylist!=null){
       setRankData(monthlylist)
     }
-    else if(check === '연간'){
-      setRankData(yearlyRows)
+    else if(check === '연간'&& yearlylist!=null){
+      setRankData(yearlylist)
     }
   
     return(
@@ -135,7 +165,7 @@ const RankingContainer = () => {
       <TableContainer component={Paper}>
         <Table aria-label="Ranking table">
           <TableBody>
-            {monthlylist.map((row, idx) => (
+            {rankData.map((row, idx) => (
               <Row key={idx} row={row} />
             ))}
           </TableBody>

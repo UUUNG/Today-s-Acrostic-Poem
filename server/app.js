@@ -97,13 +97,90 @@ app.get('/RankingPageMonthREPLY/:id', async (req, res, next) => {
   }
 });
 
-app.get('/RankingPageMonth', async (req, res, next) => {
+app.get('/RankingWeekly', async (req, res, next) => {
   try {
     const sqlPoem = `
       SELECT * 
       FROM POEM 
-      WHERE created > "2021-07" 
-      AND created < "2021-08" 
+      WHERE YEARWEEK(created) = YEARWEEK(now())
+      ORDER BY likes desc
+    `
+    const resultPoem = await pool.query(sqlPoem);
+    
+    let poems = resultPoem[0];
+    let idx = 0;
+
+    for(const poem of resultPoem[0]){
+      const sqlReply = `
+        SELECT * 
+        FROM REPLY
+        WHERE REPLY.poemId = ?
+      `
+
+      const resultReply = await pool.query(sqlReply, [
+        poem.poemId
+      ])
+      
+      poems[idx]["replyList"] = resultReply[0]
+
+      idx += 1;
+    }
+
+    console.log(poems)
+
+    res.json({ code: 200, result: "success", data : poems });
+  }
+  catch(e) {
+    console.log(e)
+    res.json({ code: 500, result: "error", message: e.message });
+  }
+});
+
+app.get('/RankingMonthly', async (req, res, next) => {
+  try {
+    const sqlPoem = `
+      SELECT * 
+      FROM POEM 
+      WHERE DATE_FORMAT(created, '%m')=MONTH(current_date())
+      ORDER BY likes desc
+    `
+    const resultPoem = await pool.query(sqlPoem);
+    
+    let poems = resultPoem[0];
+    let idx = 0;
+
+    for(const poem of resultPoem[0]){
+      const sqlReply = `
+        SELECT * 
+        FROM REPLY
+        WHERE REPLY.poemId = ?
+      `
+
+      const resultReply = await pool.query(sqlReply, [
+        poem.poemId
+      ])
+      
+      poems[idx]["replyList"] = resultReply[0]
+
+      idx += 1;
+    }
+
+    console.log(poems)
+
+    res.json({ code: 200, result: "success", data : poems });
+  }
+  catch(e) {
+    console.log(e)
+    res.json({ code: 500, result: "error", message: e.message });
+  }
+});
+
+app.get('/RankingYearly', async (req, res, next) => {
+  try {
+    const sqlPoem = `
+      SELECT * 
+      FROM POEM 
+      WHERE DATE_FORMAT(created, '%Y')=YEAR(current_date()) 
       ORDER BY likes desc
     `
     const resultPoem = await pool.query(sqlPoem);
