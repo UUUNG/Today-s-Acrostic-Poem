@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useEffect} from 'react';
 import Grid from '@material-ui/core/Grid';
 import Hidden from '@material-ui/core/Hidden';
 import Popup from 'reactjs-popup';
@@ -46,48 +46,40 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-  
-function createData(subject, like, img) {
-  return {
-    subject,
-    like,
-    img,
-  };
-}
-
-const griddatas = [
-  createData('바나나','341',"https://cdn.pixabay.com/photo/2014/12/21/23/39/bananas-575773_960_720.png"),
-  createData('복숭아','291','https://cdn.pixabay.com/photo/2013/11/28/09/58/peach-219845_960_720.jpg'),
-  createData('청포도','277', 'https://cdn.pixabay.com/photo/2014/12/28/18/22/grapes-582207_960_720.jpg'),
-  createData('산딸기','262','https://cdn.pixabay.com/photo/2014/08/21/09/25/raspberries-423194_960_720.jpg'),
-  createData('코코넛','259','https://cdn.pixabay.com/photo/2016/07/06/20/56/coconut-1501334_960_720.jpg'),
-  createData('두리안','231','https://cdn.pixabay.com/photo/2013/07/12/19/24/durian-fruit-154723_960_720.png'),
-  createData('무화과','216','https://cdn.pixabay.com/photo/2012/04/26/19/37/fig-42900_960_720.png',),
-  createData('오렌지','179','https://cdn.pixabay.com/photo/2012/04/26/12/52/orange-42395_960_720.png'),
-  createData('토마토','163','https://cdn.pixabay.com/photo/2014/04/02/10/43/tomato-304316_960_720.png'),
-  createData('한라봉','143','https://cdn.pixabay.com/photo/2014/03/24/17/07/orange-295065_960_720.png'),
-];
-
-
- 
-
 const Grids = (props) => {
     const classes = useStyles();
     const [open, setOpen] = React.useState(false);
+    const [hofDatas, setHofData] = React.useState([]);
+  
+    const callApi = async()=>{
+      const response = await fetch('/HOFPage');
+      const body = await response.json();
+      return body;
+    }
+    
+    useEffect(()=>{
+    
+      callApi()
+      .then(res=>{
+        console.log(res)
+        setHofData(res.data)
+      })
+      .catch(err=>console.log(err));
+    }, []);
 
     return (
         <Grid container spacing={5}>
-        {griddatas.map((griddata) => (
-            <Grid item key={griddata.subject} xs={12} sm={6} md={4}>
+        {hofDatas.map((hofData) => (
+            <Grid item key={hofData.subject} xs={12} sm={6} md={4}>
               <Card className={classes.card}>
               <Popup trigger={
                   <Button style={{display:'flex',justifyContent:'space-between',backgroundColor:'#f2f4f7',borderColor:'1px solid black'}} 
                   onClick={() => setOpen(!open)}>
                       <CardContent className={classes.cardContent}>
                       <Hidden xsDown>
-                          <CardMedia className={classes.cardMedia} image={griddata.img} title="Image title"/>
+                          <CardMedia className={classes.cardMedia} image={hofData.img_url} title="Image title"/>
                       </Hidden>
-                      <Typography gutterBottom variant="h4" component="h2"> {griddata.subject} <ThumbUpAltIcon /> {griddata.like} </Typography>
+                      <Typography gutterBottom variant="h4" component="h2"> {hofData.subject} <ThumbUpAltIcon /> {hofData.likes} </Typography>
                       </CardContent>
                   </Button>
               } position="right center">

@@ -13,7 +13,7 @@ import CommentIcon from '@material-ui/icons/Comment';
 import ShareIcon from '@material-ui/icons/Share';
 import Button from '@material-ui/core/Button'
 import TextField from '@material-ui/core/TextField'
-import Reple from './Reple';
+import dayjs from 'dayjs';
 
 const useRowStyles = makeStyles({
     root: {
@@ -23,8 +23,8 @@ const useRowStyles = makeStyles({
     },
   });
   
-function Row(rows) {
-    const { row } = rows;
+function Row({ row }) {
+    console.log(row)
     const [open, setOpen] = React.useState(false);
     const classes = useRowStyles();
     const [openReply, setOpen_reply] = React.useState(false);
@@ -56,17 +56,46 @@ function Row(rows) {
             <Box margin={3}>
               <Paper variant="outlined" square style={{padding:10}}>
                 <Typography variant="caption" gutterBottom component="div">
-                  바나나 나랑 나눠먹자
+                  {row.poem_1}
+                </Typography>
+                <Typography variant="caption" gutterBottom component="div">
+                  {row.poem_2}
+                </Typography>
+                <Typography variant="caption" gutterBottom component="div">
+                  {row.poem_3}
                 </Typography>
                 <div style={{display:'flex',justifyContent:'center'}}>
                   <Typography variant="caption" >공유하기</Typography>
                   <ShareIcon fontSize="small"/>
-                  96
                 </div>
                 
               </Paper>
   
-              {/* <Reple rows={row}></Reple> */}
+              <Table size="small" aria-label="comments">
+                <TableBody>
+                  {row.replyList && row.replyList.map((historyRow, idx) => (
+                    <div style={{padding: 10}}>
+                      <div style={{display:'flex'}}>
+                        <Typography style={{fontSize: 12, marginRight: 10}}>{historyRow.name}</Typography>
+                        <Typography style={{fontSize: 12, color:'#888'}}>{dayjs(historyRow.created).format("MM.DD HH:mm")}</Typography>
+                      </div>
+                      <Typography style={{fontSize: 14}}>{historyRow.reply}</Typography>
+                    </div>
+                  ))}
+                  <div style={{display:'flex',flexGrow:1,flexBasis:0}}>
+                    <Button onClick={() => setOpen_reply(!openReply)}>
+                      댓글쓰기
+                    </Button>
+                  </div>
+                    <Collapse in={openReply} timeout="auto" unmountOnExit>
+                      <div style={{ margin:5,display:'flex', flexDirection:'row'}}>
+                        <TextField required id="standard-required"  defaultValue="닉네임"/>
+                        <TextField required id="standard-required"  defaultValue="비밀번호" />
+                        <TextField required id="standard-required"  defaultValue="내용" />
+                      </div>
+                  </Collapse>
+                </TableBody>
+              </Table>
             </Box>
           </Collapse>
         </TableRow>
@@ -76,4 +105,3 @@ function Row(rows) {
   }
 
   export default Row;
-  

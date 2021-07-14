@@ -4,25 +4,13 @@ import Box from '@material-ui/core/Box';
 import PropTypes from 'prop-types';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
-import TableRow from '@material-ui/core/TableRow';
 import TableContainer from '@material-ui/core/TableContainer';
 import Paper from '@material-ui/core/Paper';
 import GridHead from '../molecules/GridHead';
-import Collapse from '@material-ui/core/Collapse';
-import TextField from '@material-ui/core/TextField';
-
-import PersonIcon from '@material-ui/icons/Person';
-import ThumbUpAltIcon from '@material-ui/icons/ThumbUpAlt';
 import CheckIcon from '@material-ui/icons/Check';
-import CommentIcon from '@material-ui/icons/Comment';
-import ShareIcon from '@material-ui/icons/Share';
-
 import Button from '@material-ui/core/Button';
 import Row from '../molecules/Row'
-import Typography from '@material-ui/core/Typography';
-
-import Reple from '../molecules/Reple'
-import ReplyRow from '../molecules/ReplyRow'
+import dayjs from 'dayjs'
 
 function createData(word, name, likes,comment) {
   return {
@@ -82,26 +70,56 @@ const useStyles = makeStyles((theme) => ({
   
 }));
 
-const RankingContainer = (props) => {
+const RankingContainer = () => {
   const classes = useStyles();
   const [sorting, setSorting] = React.useState('주간');
-  const rankData = React.useState(props);
-  const [replyData, setReplyData]=React.useState(null);
-  const [monthlylist, setMonthlyList]=React.useState(0);
-  const [open, setOpen] = React.useState(false);
-  const [openReply, setOpen_reply] = React.useState(false);
+  const [rankData, setRankData] = React.useState([]);
+  const [Weeklylist, setWeeklyList] = React.useState([]);
+  const [monthlylist, setMonthlyList] = React.useState([]);
+  const [yearlylist, setYearlyList] = React.useState([]);
 
+  const callWeeklyApi = async()=>{
+    const response = await fetch('/RankingWeekly');
+    const body = await response.json();
+    return body;
+  }
 
-  const callApi = async()=>{
-    const response = await fetch('/RankingPageMonth');
+  const callMonthlyApi = async()=>{
+    const response = await fetch('/RankingMonthly');
+    const body = await response.json();
+    return body;
+  }
+
+  const callYearlyApi = async()=>{
+    const response = await fetch('/RankingYearly');
     const body = await response.json();
     return body;
   }
 
   useEffect(()=>{
-      callApi()
-      .then(res=>setMonthlyList(res[0]))
+
+      callWeeklyApi()
+      .then(res=>{
+        console.log(res)
+        setWeeklyList(res.data)
+      })
       .catch(err=>console.log(err));
+
+      callMonthlyApi()
+      .then(res=>{
+        console.log(res)
+        setMonthlyList(res.data)
+      })
+      .catch(err=>console.log(err));
+
+      callYearlyApi()
+      .then(res=>{
+        console.log(res)
+        setYearlyList(res.data)
+      })
+      .catch(err=>console.log(err));
+
+      setRankData(Weeklylist);
   }, []);
 
   const handleSortingClick = (category) => {
@@ -109,16 +127,16 @@ const RankingContainer = (props) => {
   };
 
   const CheckedButton = ({check}) => {
-    if(check === '주간' && monthlylist!=null){
-      setReplyData(monthlylist)
+    if(check === '주간'&& Weeklylist!=null){
+      setRankData(Weeklylist)
     }
     else if(check === '월간'&& monthlylist!=null){
-      setReplyData(monthlylist)
+      setRankData(monthlylist)
     }
-    else if(check === '연간' && monthlylist!=null){
-      setReplyData(monthlylist)
+    else if(check === '연간'&& yearlylist!=null){
+      setRankData(yearlylist)
     }
-    console.log("replyData", {replyData});
+  
     return(
       <>
         <CheckIcon/>
@@ -131,7 +149,7 @@ const RankingContainer = (props) => {
       <div className={classes.heroContent}>
         <GridHead name="주간/월간/연간랭킹" description="주간/월간/연간별 랭킹을 보여줍니다."/>
       </div>
-      {monthlylist? <div>{monthlylist[0].created}</div> : <div></div>}
+      {monthlylist.length > 0 && <div>{dayjs(monthlylist[0].created).format("YYYY년 MM월 DD일 HH:mm:ss")}</div>}
       <Box flexDirection="row" style={{display: 'inline-flex'}}>
         <Button onClick={() => handleSortingClick('주간')}>
           {sorting=== '주간' ? <CheckedButton check={'주간'}/> : '주간' } 
@@ -147,78 +165,9 @@ const RankingContainer = (props) => {
       <TableContainer component={Paper}>
         <Table aria-label="Ranking table">
           <TableBody>
-          {rankData[0]['props'] ? rankData[0]['props'].map((row) => (
-            <React.Fragment>
-              <Paper variant="outlined" square style={{display:'flex', flexDirection:'column',flexGrow:5,flexBasis:0}}>
-              {/* {rankData[0]['props'] ? rankData[0]['props'].map((row) => ( */}
-                <TableRow className={classes.root} onClick={() => setOpen(!open)}>
-                    <div style={{display:'flex', flexGrow:5,flexBasis:0}}>
-                      <Typography style={{flexGrow:2,flexBasis:0}}>{row.word}</Typography>
-                      <div style={{display:'flex',flexGrow:1,flexBasis:0}}>
-                        <PersonIcon />
-                        <Typography >{row.name}</Typography>
-                      </div>
-                      <div style={{display:'flex',flexGrow:1,flexBasis:0}}>
-                        <ThumbUpAltIcon />
-                        <Typography>{row.likes}</Typography>
-                      </div>
-                      <div style={{display:'flex',flexGrow:1,flexBasis:0}}>
-                        <CommentIcon />
-                        <Typography>{row.comment}</Typography>
-                      </div>
-                    </div>
-                </TableRow>
-            {/*   )) : <div></div>
-              } */}
-        
-              <TableRow>
-                <Collapse in={open} timeout="auto" unmountOnExit>
-                  <Box margin={3}>
-                    <Paper variant="outlined" square style={{padding:10}}>
-                      <Typography variant="caption" gutterBottom component="div">
-                        바나나 나랑 나눠먹자
-                      </Typography>
-                      <div style={{display:'flex',justifyContent:'center'}}>
-                        <Typography variant="caption" >공유하기</Typography>
-                        <ShareIcon fontSize="small"/>
-                      </div>
-                      
-                    </Paper>
-                    <Table size="small" aria-label="comments">
-                      <TableBody>
-                        <div style={{display:'flex', flexGrow:5,flexBasis:0 , minWidth:'parent'}}>
-                          <ReplyRow replyDatas={replyData}></ReplyRow>
-                        </div>
-                        <div style={{display:'flex',flexGrow:1,flexBasis:0}}>
-                          <Button onClick={() => setOpen_reply(!openReply)}>
-                            댓글쓰기
-                          </Button>
-                        </div>
-                          <Collapse in={openReply} timeout="auto" unmountOnExit>
-                            <div style={{ margin:5,display:'flex', flexDirection:'row'}}>
-                              <TextField required id="standard-required"  defaultValue="닉네임"/>
-                              <TextField required id="standard-required"  defaultValue="비밀번호" />
-                              <TextField required id="standard-required"  defaultValue="내용" />
-                            </div>
-                        </Collapse>
-                      </TableBody>
-                    </Table>
-                   {/*  {replyData ? replyData.map((reple_row) => (
-                      <div>
-                        {reple_row ? <Table>
-                        <Reple key={reple_row.name} reple_rows={reple_row}></Reple>
-                        </Table> : <></>}
-                      </div>
-                    )) : <></>
-                    } */}
-                    {/* <Reple rows={row}></Reple> */}
-                  </Box>
-                </Collapse>
-              </TableRow>
-              </Paper>
-            </React.Fragment>
-          )) : <div></div>
-          }
+            {rankData.map((row, idx) => (
+              <Row key={idx} row={row} />
+            ))}
           </TableBody>
         </Table>
       </TableContainer>
