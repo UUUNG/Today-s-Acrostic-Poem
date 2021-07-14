@@ -97,7 +97,7 @@ export default function NoticePage() {
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [notice, setNotice]=React.useState(0)
   var emptyRows = 0;
-  console.log("notice:", notice);
+  
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
