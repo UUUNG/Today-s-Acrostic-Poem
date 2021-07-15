@@ -130,17 +130,6 @@ app.get('/MainLatest', async (req, res, next) => {
   }
 });
 
-app.get('/NoticePage', async (req, res, next) => {
-  try {
-    const connect = await pool.getConnection();
-    const row = await connect.query('SELECT * FROM notice;');
-    connect.release();
-    res.json(row);
-  }
-  catch(e) {
-    res.json(e);
-  }
-});
 //데이터의 Insert나 Update 시에는 query가 아닌 execute를 사용
 app.get('/NoticePage', async (req, res, next) => {
   try {
