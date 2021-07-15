@@ -172,7 +172,6 @@ app.get('/RankingWeekly', async (req, res, next) => {
       SELECT * 
       FROM POEM 
       WHERE YEARWEEK(created) = YEARWEEK(now())
-      WHERE DATE_FORMAT(created, '%m')=MONTH(current_date())
       ORDER BY likes desc
     `
     const resultPoem = await pool.query(sqlPoem);

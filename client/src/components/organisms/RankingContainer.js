@@ -77,13 +77,13 @@ const RankingContainer = () => {
   };
 
   const CheckedButton = ({check}) => {
-    if(check === '주간'&& Weeklylist!=null){
+    if(check === '주간'&& Weeklylist){
       setRankData(Weeklylist)
     }
-    else if(check === '월간'&& monthlylist!=null){
+    else if(check === '월간'&& monthlylist){
       setRankData(monthlylist)
     }
-    else if(check === '연간'&& yearlylist!=null){
+    else if(check === '연간'&& yearlylist){
       setRankData(yearlylist)
     }
   
@@ -99,7 +99,6 @@ const RankingContainer = () => {
       <div className={classes.heroContent}>
         <GridHead name="주간/월간/연간랭킹" description="주간/월간/연간별 랭킹을 보여줍니다."/>
       </div>
-      {monthlylist.length > 0 && <div>{dayjs(monthlylist[0].created).format("YYYY년 MM월 DD일 HH:mm:ss")}</div>}
       <Box flexDirection="row" style={{display: 'inline-flex'}}>
         <Button onClick={() => handleSortingClick('주간')}>
           {sorting=== '주간' ? <CheckedButton check={'주간'}/> : '주간' } 

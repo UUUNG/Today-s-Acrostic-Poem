@@ -1,6 +1,8 @@
 import React,{useEffect} from 'react';
 import PropTypes from 'prop-types';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
+import Box from '@material-ui/core/Box';
+import Collapse from '@material-ui/core/Collapse';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -8,6 +10,7 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableFooter from '@material-ui/core/TableFooter';
 import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
+import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import IconButton from '@material-ui/core/IconButton';
 import FirstPageIcon from '@material-ui/icons/FirstPage';
@@ -89,13 +92,20 @@ const useStyles2 = makeStyles((theme)=>({
   heroContent: {
     padding: theme.spacing(8, 0, 6),
   },
+  root: {
+    '& > *': {
+      borderBottom: 'unset',
+    },
+  },
 }));
 
 export default function NoticePage() {
   const classes = useStyles2();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
-  const [notice, setNotice]=React.useState(0)
+  const [notice, setNotice]=React.useState(0);
+  const [open, setOpen] = React.useState("");
+
   var emptyRows = 0;
   
   const handleChangePage = (event, newPage) => {
@@ -116,15 +126,24 @@ export default function NoticePage() {
   useEffect(()=>{
       callApi()
       .then(res => {
-        setNotice(res[0])
+        setNotice(res.data)
       })
       .catch(err=>{
         console.log(err)
       });
   }, [page]);
+
   if (notice) {
     emptyRows = rowsPerPage - Math.min(rowsPerPage, notice.length - page * rowsPerPage);
   }
+
+  const handleClick = (idx) => {
+    if (open === idx) {
+      setOpen("")
+    }else{
+      setOpen(idx)
+    }
+  };
   
   return (
     <div>
@@ -138,8 +157,9 @@ export default function NoticePage() {
           {notice ? ((rowsPerPage > 0
               ? notice.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage) 
               : notice
-            ).map((notice) => (
-              <TableRow key={notice.title}>
+            ).map((notice, idx) => (
+              <React.Fragment>
+              <TableRow key={idx} onClick={() => handleClick(idx)}>
                 <TableCell component="th" scope="row">
                   {notice.title}
                 </TableCell>
@@ -150,6 +170,16 @@ export default function NoticePage() {
                 <div>{dayjs(notice.date).format("YYYY년 MM월 DD일 HH:mm:ss")}</div>
                 </TableCell>
               </TableRow>
+              <Collapse in={idx===open} timeout="auto" unmountOnExit>
+                <Box margin={3}>
+                  <Paper variant="outlined" square style={{padding:10}}>
+                    <Typography variant="caption" gutterBottom component="div">
+                      {notice.content}
+                    </Typography>
+                  </Paper>
+                </Box>
+              </Collapse>
+              </React.Fragment>
              ))) : ""}
             {notice && 
               emptyRows > 0 && (
