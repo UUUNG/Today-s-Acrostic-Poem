@@ -95,7 +95,8 @@ export default function NoticePage() {
   const classes = useStyles2();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
-  const [notice, setNotice]=React.useState(0)
+  const [notice, setNotice]=React.useState(0);
+
   var emptyRows = 0;
   
   const handleChangePage = (event, newPage) => {
@@ -116,22 +117,19 @@ export default function NoticePage() {
   useEffect(()=>{
       callApi()
       .then(res => {
-        setNotice(res[0])
+        setNotice(res.data)
       })
       .catch(err=>{
         console.log(err)
       });
   }, [page]);
+
   if (notice) {
     emptyRows = rowsPerPage - Math.min(rowsPerPage, notice.length - page * rowsPerPage);
   }
   
   return (
     <div>
-      <div className={classes.heroContent}>
-        <GridHead name="공지사항" description=" "/>
-      </div>
-      
       <TableContainer component={Paper}>
         <Table className={classes.table} aria-label="custom pagination table">
           <TableBody>

@@ -24,7 +24,6 @@ const useRowStyles = makeStyles({
   });
   
 function Row({ row }) {
-    console.log(row)
     const [open, setOpen] = React.useState(false);
     const classes = useRowStyles();
     const [openReply, setOpen_reply] = React.useState(false);

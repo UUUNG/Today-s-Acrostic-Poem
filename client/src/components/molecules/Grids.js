@@ -12,7 +12,7 @@ import { makeStyles } from '@material-ui/core/styles';
 
 import ThumbUpAltIcon from '@material-ui/icons/ThumbUpAlt';
 import PoemListContainer from '../organisms/PoemListContainer';
-
+import RankingContainer from '../organisms/RankingContainer';
 
 const useStyles = makeStyles((theme) => ({
     icon: {
@@ -61,7 +61,6 @@ const Grids = (props) => {
     
       callApi()
       .then(res=>{
-        console.log(res)
         setHofData(res.data)
       })
       .catch(err=>console.log(err));
@@ -85,7 +84,7 @@ const Grids = (props) => {
               } position="right center">
                       <div style={{display:'flex', backgroundColor:'#f2f4f7'}}>
                           {/* 클릭 시 팝업 출력 부분 */}
-                          <PoemListContainer></PoemListContainer>
+                          <RankingContainer></RankingContainer>
                       </div>
                 </Popup>
               </Card>        
