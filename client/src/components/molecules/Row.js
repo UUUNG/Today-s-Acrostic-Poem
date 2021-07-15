@@ -24,7 +24,6 @@ const useRowStyles = makeStyles({
   });
   
 function Row({ row }) {
-    console.log(row)
     const [open, setOpen] = React.useState(false);
     const classes = useRowStyles();
     const [openReply, setOpen_reply] = React.useState(false);
@@ -56,13 +55,13 @@ function Row({ row }) {
             <Box margin={3}>
               <Paper variant="outlined" square style={{padding:10}}>
                 <Typography variant="caption" gutterBottom component="div">
-                  {row.poem_1}
+                  {row.word.split('')[0]}{row.poem_1}
                 </Typography>
                 <Typography variant="caption" gutterBottom component="div">
-                  {row.poem_2}
+                  {row.word.split('')[1]}{row.poem_2}
                 </Typography>
                 <Typography variant="caption" gutterBottom component="div">
-                  {row.poem_3}
+                  {row.word.split('')[2]}{row.poem_3}
                 </Typography>
                 <div style={{display:'flex',justifyContent:'center'}}>
                   <Typography variant="caption" >공유하기</Typography>
