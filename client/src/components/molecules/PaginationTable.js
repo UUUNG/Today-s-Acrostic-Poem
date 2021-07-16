@@ -118,7 +118,7 @@ export default function PaginationTable( {data, name}) {
       <TableContainer component={Paper}>
         <Table className={classes.table} aria-label="custom pagination table">
           <TableBody>
-          {data ? data==="notice"? ((rowsPerPage > 0
+          {data ? name==="notice"? ((rowsPerPage > 0
               ? data.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage) 
               : data
             ).map((data, idx) => (
