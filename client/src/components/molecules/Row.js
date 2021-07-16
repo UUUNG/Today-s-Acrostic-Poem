@@ -10,7 +10,6 @@ import TableBody from '@material-ui/core/TableBody';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import CommentIcon from '@material-ui/icons/Comment';
-import ShareIcon from '@material-ui/icons/Share';
 import Button from '@material-ui/core/Button'
 import TextField from '@material-ui/core/TextField'
 import dayjs from 'dayjs';
@@ -39,86 +38,89 @@ function Row({ row, onReply = true }) {
 
     return (
       <React.Fragment>
-        <Paper variant="outlined" square style={{display:'flex', flexDirection:'column',flexGrow:5,flexBasis:0}}>
-        <TableRow className={classes.root} onClick={() => setOpen(!open)}>
-          <div style={{display:'flex', flexGrow:5,flexBasis:0}}>
-            <Typography style={{flexGrow:2,flexBasis:0}}>{row.word}</Typography>
-            <div style={{display:'flex',flexGrow:1,flexBasis:0}}>
-              <PersonIcon />
-              <Typography >{row.name}</Typography>
+        {row && <div>
+          <Paper variant="outlined" square style={{display:'flex', flexDirection:'column',flexGrow:5,flexBasis:0}}>
+          <TableRow className={classes.root} onClick={() => setOpen(!open)}>
+            <div style={{display:'flex', flexGrow:5,flexBasis:0}}>
+              <Typography style={{flexGrow:2,flexBasis:0}}>{row.word}</Typography>
+              <div style={{display:'flex',flexGrow:1,flexBasis:0}}>
+                <PersonIcon />
+                <Typography >{row.name}</Typography>
+              </div>
+              <div style={{display:'flex',flexGrow:1,flexBasis:0}}>
+                <ThumbUpAltIcon />
+                <Typography>{row.likes}</Typography>
+              </div>
+              <div style={{display:'flex',flexGrow:1,flexBasis:0}}>
+                <CommentIcon />
+                <Typography>{row.comment}</Typography>
+              </div>
             </div>
-            <div style={{display:'flex',flexGrow:1,flexBasis:0}}>
-              <ThumbUpAltIcon />
-              <Typography>{row.likes}</Typography>
-            </div>
-            <div style={{display:'flex',flexGrow:1,flexBasis:0}}>
-              <CommentIcon />
-              <Typography>{row.comment}</Typography>
-            </div>
-          </div>
-  
-        </TableRow>
-  
-        <TableRow>
-          <Collapse in={open} timeout="auto" unmountOnExit>
-            <Box margin={3}>
-              <Paper variant="outlined" square style={{padding:10}}>
-                <Typography variant="caption" gutterBottom component="div">
-                  {row.word.split('')[0]}{row.poem_1}
-                </Typography>
-                <Typography variant="caption" gutterBottom component="div">
-                  {row.word.split('')[1]}{row.poem_2}
-                </Typography>
-                <Typography variant="caption" gutterBottom component="div">
-                  {row.word.split('')[2]}{row.poem_3}
-                </Typography>
-                <div style={{display:'flex',justifyContent:'center'}}>
-                <Typography variant="caption" gutterBottom component="div">공유하기</Typography>
-                  <FacebookShareButton url={"https://localhost:3000"} title={"facebook"}>
-                    <FacebookIcon size={26} round={true}/>
-                  </FacebookShareButton>
-                  <TwitterShareButton url={"https://localhost:3000"} title={"facebook"}>
-                    <TwitterIcon size={26} round={true}/>
-                  </TwitterShareButton>
-                  <InstapaperShareButton url={"https://localhost:3000"} title={"facebook"}>
-                    <InstapaperIcon size={26} round={true}/>
-                  </InstapaperShareButton>
-                </div>
-                
-              </Paper>
-  
-              <Table size="small" aria-label="comments">
-                <TableBody>
-                  {row.replyList && row.replyList.map((historyRow, idx) => (
-                    <div style={{padding: 10}}>
-                      <div style={{display:'flex'}}>
-                        <Typography style={{fontSize: 12, marginRight: 10}}>{historyRow.name}</Typography>
-                        <Typography style={{fontSize: 12, color:'#888'}}>{dayjs(historyRow.created).format("MM.DD HH:mm")}</Typography>
-                      </div>
-                      <Typography style={{fontSize: 14}}>{historyRow.reply}</Typography>
-                    </div>
-                  ))}
-                  {Boolean(on) && <div>
-                    <div style={{display:'flex',flexGrow:1,flexBasis:0}}>
-                      <Button onClick={() => setOpen_reply(!openReply)}>
-                        댓글쓰기
-                      </Button>
-                    </div>
-                      <Collapse in={openReply} timeout="auto" unmountOnExit>
-                        <div style={{ margin:5,display:'flex', flexDirection:'row'}}>
-                          <TextField required id="standard-required"  defaultValue="닉네임"/>
-                          <TextField required id="standard-required"  defaultValue="비밀번호" />
-                          <TextField required id="standard-required"  defaultValue="내용" />
+    
+          </TableRow>
+    
+          <TableRow>
+            <Collapse in={open} timeout="auto" unmountOnExit>
+              <Box margin={3}>
+                <Paper variant="outlined" square style={{padding:10}}>
+                  <Typography variant="caption" gutterBottom component="div">
+                    {row.word.split('')[0]}{row.poem_1}
+                  </Typography>
+                  <Typography variant="caption" gutterBottom component="div">
+                    {row.word.split('')[1]}{row.poem_2}
+                  </Typography>
+                  <Typography variant="caption" gutterBottom component="div">
+                    {row.word.split('')[2]}{row.poem_3}
+                  </Typography>
+                  <div style={{display:'flex',justifyContent:'center'}}>
+                  <Typography variant="caption" gutterBottom component="div">공유하기</Typography>
+                    {/* 공유하기 버튼 들 */}
+                    <FacebookShareButton url={"https://localhost:3000"} title={"facebook"}>
+                      <FacebookIcon size={26} round={true}/>
+                    </FacebookShareButton>
+                    <TwitterShareButton url={"https://localhost:3000"} title={"facebook"}>
+                      <TwitterIcon size={26} round={true}/>
+                    </TwitterShareButton>
+                    <InstapaperShareButton url={"https://localhost:3000"} title={"facebook"}>
+                      <InstapaperIcon size={26} round={true}/>
+                    </InstapaperShareButton>
+                  </div>
+                  
+                </Paper>
+    
+                <Table size="small" aria-label="comments">
+                  <TableBody>
+                    {row.replyList && row.replyList.map((historyRow, idx) => (
+                      <div style={{padding: 10}}>
+                        <div style={{display:'flex'}}>
+                          <Typography style={{fontSize: 12, marginRight: 10}}>{historyRow.name}</Typography>
+                          <Typography style={{fontSize: 12, color:'#888'}}>{dayjs(historyRow.created).format("MM.DD HH:mm")}</Typography>
                         </div>
-                    </Collapse>
-                    </div>
-                  }
-                </TableBody>
-              </Table>
-            </Box>
-          </Collapse>
-        </TableRow>
+                        <Typography style={{fontSize: 14}}>{historyRow.reply}</Typography>
+                      </div>
+                    ))}
+                    {Boolean(on) && <div>
+                      <div style={{display:'flex',flexGrow:1,flexBasis:0}}>
+                        <Button onClick={() => setOpen_reply(!openReply)}>
+                          댓글쓰기
+                        </Button>
+                      </div>
+                        <Collapse in={openReply} timeout="auto" unmountOnExit>
+                          <div style={{ margin:5,display:'flex', flexDirection:'row'}}>
+                            <TextField required id="standard-required"  defaultValue="닉네임"/>
+                            <TextField required id="standard-required"  defaultValue="비밀번호" />
+                            <TextField required id="standard-required"  defaultValue="내용" />
+                          </div>
+                      </Collapse>
+                      </div>
+                    }
+                  </TableBody>
+                </Table>
+              </Box>
+            </Collapse>
+          </TableRow>
         </Paper>
+        </div>}
       </React.Fragment>
     );
   }
