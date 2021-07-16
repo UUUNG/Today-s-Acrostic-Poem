@@ -304,6 +304,26 @@ app.get('/HOFPage', async (req, res, next) => {
   }
 });
 
+app.post('/postAcrostic', async (req, res, next) => {
+  
+  let {id, pwd, word, poem_1, poem_2, poem_3}=req.body;
+  try {
+    const sql=`INSERT INTO project1.POEM 
+    SET name=?, password=?, word=?, poem_1=?, poem_2=?,poem_3=?;
+    `
+    const post = await pool.query(sql, [
+      id, pwd, word, poem_1, poem_2, poem_3
+    ])
+    console.log(post)
+
+    res.json({ code: 200, result: "success", data : post });
+  }
+  catch(e) {
+    console.log(e)
+    res.json({ code: 500, result: "error", message: e.message });
+  }
+});
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
