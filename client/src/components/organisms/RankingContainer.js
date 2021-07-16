@@ -1,7 +1,6 @@
 import React,{useEffect} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
-import PropTypes from 'prop-types';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableContainer from '@material-ui/core/TableContainer';
@@ -10,7 +9,6 @@ import GridHead from '../molecules/GridHead';
 import CheckIcon from '@material-ui/icons/Check';
 import Button from '@material-ui/core/Button';
 import Row from '../molecules/Row'
-import dayjs from 'dayjs'
 
 const useStyles = makeStyles((theme) => ({
 
