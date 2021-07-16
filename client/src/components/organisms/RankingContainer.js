@@ -48,21 +48,19 @@ const RankingContainer = () => {
 
       callWeeklyApi()
       .then(res=>{
-        console.log(res)
+
         setWeeklyList(res.data)
       })
       .catch(err=>console.log(err));
 
       callMonthlyApi()
       .then(res=>{
-        console.log(res)
         setMonthlyList(res.data)
       })
       .catch(err=>console.log(err));
 
       callYearlyApi()
       .then(res=>{
-        console.log(res)
         setYearlyList(res.data)
       })
       .catch(err=>console.log(err));

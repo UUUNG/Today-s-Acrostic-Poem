@@ -38,14 +38,12 @@ const MainPage = () => {
 
     callLikeApi()
     .then(res=>{
-      console.log(res)
       setLikeList(res.data)
     })
     .catch(err=>console.log(err));
 
     callLatestApi()
     .then(res=>{
-      console.log(res)
       setLatestList(res.data)
     })
     .catch(err=>console.log(err));
@@ -88,7 +86,6 @@ const MainPage = () => {
           </div>
           <div style={{display:'flex',justifyContent:'space-between'}}>
             <div style={{display:'flex'}}>
-              {console.log(displayData)}
               <Button onClick={() => handleSortingClick('실시간 좋아요순')} style={{borderRight:'1px solid #EEE'}}>
                 {sorting=== '실시간 좋아요순' ? <CheckedButton check={'실시간 좋아요순'}/> : '실시간 좋아요순' } 
               </Button>
@@ -107,7 +104,6 @@ const MainPage = () => {
           <KeywordContainer/>
           <div style={{display:'flex',justifyContent:'space-between'}}>
             <div style={{display:'flex'}}>
-              {console.log(displayData)}
               <Button onClick={() => handleSortingClick('실시간 좋아요순')} style={{borderRight:'1px solid #EEE'}}>
                 {sorting=== '실시간 좋아요순' ? <CheckedButton check={'실시간 좋아요순'}/> : '실시간 좋아요순' } 
               </Button>

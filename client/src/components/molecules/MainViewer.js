@@ -28,7 +28,6 @@ const MainViewer = ({main,idx}) => {
 
     return (
         <React.Fragment>
-            {console.log(main)}
             <TableRow key={idx} onClick={() => handleClick(idx)}>
             <TableCell component="th" scope="row">
                 {main.word}
