@@ -1,7 +1,6 @@
 import React,{useEffect} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Box from '@material-ui/core/Box';
-import PropTypes from 'prop-types';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableContainer from '@material-ui/core/TableContainer';
@@ -10,57 +9,6 @@ import GridHead from '../molecules/GridHead';
 import CheckIcon from '@material-ui/icons/Check';
 import Button from '@material-ui/core/Button';
 import Row from '../molecules/Row'
-import dayjs from 'dayjs'
-
-function createData(word, name, likes,comment) {
-  return {
-    word,
-    name,
-    likes,
-    comment,
-    history: [
-      { name: '피구피규', comment: 'ㅋㅋㅋㅋㅋ아 개웃기네zzzzzzzzzzzzzz' },
-      { name: '뇽뇽', comment: '이게 왜 랭킹? ㄵ' },
-    ],
-  };
-}
-
-/**type체킹 부분. */
-Row.propTypes = {
-  row: PropTypes.shape({
-    name: PropTypes.string.isRequired,
-    word: PropTypes.string.isRequired,
-    likes: PropTypes.number.isRequired,
-    comment: PropTypes.number.isRequired,
-    history: PropTypes.arrayOf(
-      PropTypes.shape({
-        name: PropTypes.string.isRequired,
-        comment: PropTypes.string.isRequired,
-      }),
-    ).isRequired,
-  }).isRequired,
-};
-
-const weeklyRows = [
-  {'word':'바나나','name':'피구피규','likes':37,'comment':10, 'history':[{name:'피구피규',comment:'ㅋㅋㅋd아 개웃기네'},{ name: '뇽뇽', comment: '이게 왜 랭킹? ㄵ' },]},
-  {'word':'김다은','name':'이부','likes':33,'comment':12,'history':[{name:'피구피규',comment:'ㅋㅋㅋd아 개웃기네'},{ name: '뇽뇽', comment: '이게 왜 랭킹? ㄵ' },]},
-  {'word':'최재웅','name':'숨겨진트롤','likes':23,'comment':3,'history':[{name:'피구피규',comment:'ㅋㅋㅋd아 개웃기네'},{ name: '뇽뇽', comment: '이게 왜 랭킹? ㄵ' },]},
-  {'word':'한승우','name':'피피융신','likes':17,'comment':5,'history':[{name:'피구피규',comment:'ㅋㅋㅋd아 개웃기네'},{ name: '뇽뇽', comment: '이게 왜 랭킹? ㄵ' },]},
-];
-
-const monthlyRows = [
-  createData('복숭아','피구피규',37,10),
-  createData('김다은','이부', 33,12),
-  createData('최재웅','숨겨진트롤',23,3),
-  createData('한승우','피융신',17,5),
-];
-
-const yearlyRows = [
-  {'word':'복숭아','name':'피구피규','likes':37,'comment':10, 'history':[{name:'피구피규',comment:'ㅋㅋㅋd아 개웃기네'},{ name: '뇽뇽', comment: '이게 왜 랭킹? ㄵ' },]},
-  {'word':'김다은','name':'이부','likes':33,'comment':12,'history':[{name:'피구피규',comment:'ㅋㅋㅋd아 개웃기네'},{ name: '뇽뇽', comment: '이게 왜 랭킹? ㄵ' },]},
-  {'word':'최재웅','name':'숨겨진트롤','likes':23,'comment':3,'history':[{name:'피구피규',comment:'ㅋㅋㅋd아 개웃기네'},{ name: '뇽뇽', comment: '이게 왜 랭킹? ㄵ' },]},
-  {'word':'한승우','name':'피피융신','likes':17,'comment':5,'history':[{name:'피구피규',comment:'ㅋㅋㅋd아 개웃기네'},{ name: '뇽뇽', comment: '이게 왜 랭킹? ㄵ' },]},
-];
 
 const useStyles = makeStyles((theme) => ({
 
@@ -100,21 +48,19 @@ const RankingContainer = () => {
 
       callWeeklyApi()
       .then(res=>{
-        console.log(res)
+
         setWeeklyList(res.data)
       })
       .catch(err=>console.log(err));
 
       callMonthlyApi()
       .then(res=>{
-        console.log(res)
         setMonthlyList(res.data)
       })
       .catch(err=>console.log(err));
 
       callYearlyApi()
       .then(res=>{
-        console.log(res)
         setYearlyList(res.data)
       })
       .catch(err=>console.log(err));
@@ -127,13 +73,13 @@ const RankingContainer = () => {
   };
 
   const CheckedButton = ({check}) => {
-    if(check === '주간'&& Weeklylist!=null){
+    if(check === '주간'&& Weeklylist){
       setRankData(Weeklylist)
     }
-    else if(check === '월간'&& monthlylist!=null){
+    else if(check === '월간'&& monthlylist){
       setRankData(monthlylist)
     }
-    else if(check === '연간'&& yearlylist!=null){
+    else if(check === '연간'&& yearlylist){
       setRankData(yearlylist)
     }
   
@@ -146,7 +92,6 @@ const RankingContainer = () => {
 
   return (
     <div>
-      {monthlylist.length > 0 && <div>{dayjs(monthlylist[0].created).format("YYYY년 MM월 DD일 HH:mm:ss")}</div>}
       <Box flexDirection="row" style={{display: 'inline-flex'}}>
         <Button onClick={() => handleSortingClick('주간')}>
           {sorting=== '주간' ? <CheckedButton check={'주간'}/> : '주간' } 
@@ -162,7 +107,7 @@ const RankingContainer = () => {
       <TableContainer component={Paper}>
         <Table aria-label="Ranking table">
           <TableBody>
-            {rankData.map((row, idx) => (
+            {rankData.slice(0,10).map((row, idx) => (
               <Row key={idx} row={row} />
             ))}
           </TableBody>

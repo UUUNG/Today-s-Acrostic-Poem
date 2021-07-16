@@ -14,6 +14,14 @@ import ShareIcon from '@material-ui/icons/Share';
 import Button from '@material-ui/core/Button'
 import TextField from '@material-ui/core/TextField'
 import dayjs from 'dayjs';
+import {
+  FacebookShareButton,
+  InstapaperShareButton,
+  TwitterShareButton,
+  FacebookIcon,
+  InstapaperIcon,
+  TwitterIcon,
+} from "react-share";
 
 const useRowStyles = makeStyles({
     root: {
@@ -56,17 +64,25 @@ function Row({ row, onReply = true }) {
             <Box margin={3}>
               <Paper variant="outlined" square style={{padding:10}}>
                 <Typography variant="caption" gutterBottom component="div">
-                  {row.poem_1}
+                  {row.word.split('')[0]}{row.poem_1}
                 </Typography>
                 <Typography variant="caption" gutterBottom component="div">
-                  {row.poem_2}
+                  {row.word.split('')[1]}{row.poem_2}
                 </Typography>
                 <Typography variant="caption" gutterBottom component="div">
-                  {row.poem_3}
+                  {row.word.split('')[2]}{row.poem_3}
                 </Typography>
                 <div style={{display:'flex',justifyContent:'center'}}>
-                  <Typography variant="caption" >공유하기</Typography>
-                  <ShareIcon fontSize="small"/>
+                <Typography variant="caption" gutterBottom component="div">공유하기</Typography>
+                  <FacebookShareButton url={"https://localhost:3000"} title={"facebook"}>
+                    <FacebookIcon size={26} round={true}/>
+                  </FacebookShareButton>
+                  <TwitterShareButton url={"https://localhost:3000"} title={"facebook"}>
+                    <TwitterIcon size={26} round={true}/>
+                  </TwitterShareButton>
+                  <InstapaperShareButton url={"https://localhost:3000"} title={"facebook"}>
+                    <InstapaperIcon size={26} round={true}/>
+                  </InstapaperShareButton>
                 </div>
                 
               </Paper>

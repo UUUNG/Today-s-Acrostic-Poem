@@ -20,7 +20,7 @@ const RankingPage = () => {
     <div>
       <Container maxWidth="sm">
       <div className={classes.heroContent}>
-          <GridHead name="주간/월간/연간랭킹" description="주간/월간/연간별 랭킹을 보여줍니다."/>
+          <GridHead name="주간/월간/연간랭킹" description="주간/월간/연간별 TOP10을 보여줍니다."/>
         </div>
         <RankingContainer/>
       </Container>
