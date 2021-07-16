@@ -92,9 +92,6 @@ const RankingContainer = () => {
 
   return (
     <div>
-      <div className={classes.heroContent}>
-        <GridHead name="주간/월간/연간랭킹" description="주간/월간/연간별 TOP10을 보여줍니다."/>
-      </div>
       <Box flexDirection="row" style={{display: 'inline-flex'}}>
         <Button onClick={() => handleSortingClick('주간')}>
           {sorting=== '주간' ? <CheckedButton check={'주간'}/> : '주간' } 

@@ -141,6 +141,7 @@ app.get('/NoticePage', async (req, res, next) => {
     res.json({ code: 500, result: "error", message: e.message });
   }
 });
+
 //path 는 영어만 인식합니다. RANKINGPAGEMONTHREPLY
 app.get('/RankingPageMonthREPLY/:id', async (req, res, next) => {
   const { id } = req.params;
@@ -173,7 +174,7 @@ app.get('/RankingWeekly', async (req, res, next) => {
       FROM POEM 
       WHERE YEARWEEK(created) = YEARWEEK(now())
       ORDER BY likes desc
-    `
+    `  
     const resultPoem = await pool.query(sqlPoem);
     
     let poems = resultPoem[0];
@@ -186,11 +187,11 @@ app.get('/RankingWeekly', async (req, res, next) => {
         WHERE REPLY.poemId = ?
       `
 
-      const resultReply = await pool.query(sqlReply, [
+      const resultReply2 = await pool.query(sqlReply, [
         poem.poemId
       ])
       
-      poems[idx]["replyList"] = resultReply[0]
+      poems[idx]["replyList"] = resultReply2[0]
 
       idx += 1;
     }
@@ -225,11 +226,11 @@ app.get('/RankingMonthly', async (req, res, next) => {
         WHERE REPLY.poemId = ?
       `
 
-      const resultReply = await pool.query(sqlReply, [
+      const resultReply3 = await pool.query(sqlReply, [
         poem.poemId
       ])
       
-      poems[idx]["replyList"] = resultReply[0]
+      poems[idx]["replyList"] = resultReply3[0]
 
       idx += 1;
     }
@@ -264,11 +265,11 @@ app.get('/RankingYearly', async (req, res, next) => {
         WHERE REPLY.poemId = ?
       `
 
-      const resultReply = await pool.query(sqlReply, [
+      const resultReply4 = await pool.query(sqlReply, [
         poem.poemId
       ])
       
-      poems[idx]["replyList"] = resultReply[0]
+      poems[idx]["replyList"] = resultReply4[0]
 
       idx += 1;
     }
