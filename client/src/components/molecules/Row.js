@@ -23,7 +23,8 @@ const useRowStyles = makeStyles({
     },
   });
   
-function Row({ row }) {
+function Row({ row, onReply = true }) {
+    let on = onReply;
     const [open, setOpen] = React.useState(false);
     const classes = useRowStyles();
     const [openReply, setOpen_reply] = React.useState(false);
@@ -81,18 +82,21 @@ function Row({ row }) {
                       <Typography style={{fontSize: 14}}>{historyRow.reply}</Typography>
                     </div>
                   ))}
-                  <div style={{display:'flex',flexGrow:1,flexBasis:0}}>
-                    <Button onClick={() => setOpen_reply(!openReply)}>
-                      댓글쓰기
-                    </Button>
-                  </div>
-                    <Collapse in={openReply} timeout="auto" unmountOnExit>
-                      <div style={{ margin:5,display:'flex', flexDirection:'row'}}>
-                        <TextField required id="standard-required"  defaultValue="닉네임"/>
-                        <TextField required id="standard-required"  defaultValue="비밀번호" />
-                        <TextField required id="standard-required"  defaultValue="내용" />
-                      </div>
-                  </Collapse>
+                  {Boolean(on) && <div>
+                    <div style={{display:'flex',flexGrow:1,flexBasis:0}}>
+                      <Button onClick={() => setOpen_reply(!openReply)}>
+                        댓글쓰기
+                      </Button>
+                    </div>
+                      <Collapse in={openReply} timeout="auto" unmountOnExit>
+                        <div style={{ margin:5,display:'flex', flexDirection:'row'}}>
+                          <TextField required id="standard-required"  defaultValue="닉네임"/>
+                          <TextField required id="standard-required"  defaultValue="비밀번호" />
+                          <TextField required id="standard-required"  defaultValue="내용" />
+                        </div>
+                    </Collapse>
+                    </div>
+                  }
                 </TableBody>
               </Table>
             </Box>

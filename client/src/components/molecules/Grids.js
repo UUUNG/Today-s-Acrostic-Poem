@@ -11,8 +11,7 @@ import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 
 import ThumbUpAltIcon from '@material-ui/icons/ThumbUpAlt';
-import PoemListContainer from '../organisms/PoemListContainer';
-import RankingContainer from '../organisms/RankingContainer';
+import HOFdataContainer from '../organisms/HOFdataContainer';
 
 const useStyles = makeStyles((theme) => ({
     icon: {
@@ -58,7 +57,6 @@ const Grids = (props) => {
     }
     
     useEffect(()=>{
-    
       callApi()
       .then(res=>{
         setHofData(res.data)
@@ -73,7 +71,7 @@ const Grids = (props) => {
               <Card className={classes.card}>
               <Popup trigger={
                   <Button style={{display:'flex',justifyContent:'space-between',backgroundColor:'#f2f4f7',borderColor:'1px solid black'}} 
-                  onClick={() => setOpen(!open)}>
+                  /* onClick={() => setOpen(!open)} */>
                       <CardContent className={classes.cardContent}>
                       <Hidden xsDown>
                           <CardMedia className={classes.cardMedia} image={hofData.img_url} title="Image title"/>
@@ -81,11 +79,13 @@ const Grids = (props) => {
                       <Typography gutterBottom variant="h4" component="h2"> {hofData.subject} <ThumbUpAltIcon /> {hofData.likes} </Typography>
                       </CardContent>
                   </Button>
-              } position="right center">
-                      <div style={{display:'flex', backgroundColor:'#f2f4f7'}}>
-                          {/* 클릭 시 팝업 출력 부분 */}
-                          <RankingContainer></RankingContainer>
-                      </div>
+              } position="top center">
+                    <div style={{display:'flex', backgroundColor:'#f2f4f7', width: '400px'}}>
+                        {/* 클릭 시 팝업 출력 부분 */}
+                        <div style={{width:'100%'}}>
+                          <HOFdataContainer></HOFdataContainer>
+                        </div>
+                    </div>
                 </Popup>
               </Card>        
             </Grid>
