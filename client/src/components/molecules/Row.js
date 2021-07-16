@@ -14,6 +14,7 @@ import ShareIcon from '@material-ui/icons/Share';
 import Button from '@material-ui/core/Button'
 import TextField from '@material-ui/core/TextField'
 import dayjs from 'dayjs';
+import axios from 'axios';
 
 const useRowStyles = makeStyles({
     root: {
@@ -27,6 +28,31 @@ function Row({ row }) {
     const [open, setOpen] = React.useState(false);
     const classes = useRowStyles();
     const [openReply, setOpen_reply] = React.useState(false);
+    const [values, setValues] = React.useState({ poemId:"", id: "", password: "", reply:"" });
+
+    const  handleChange = (e) => {
+      const { name, value } = e.target;
+      setValues({ ...values, [name]: value,poemId:row.poemId });
+    } 
+
+    const handleSubmit= (e) => {
+      if(values.id==""||values.password==""||values.reply==""){
+        if(values.reply==""){
+          alert("댓글을 입력해주세요!");
+        }
+        else{
+          alert('모두 입력해주세요!');
+        }
+        e.preventDefault();
+  
+      }else{
+        alert('댓글이 등록되었습니다!');
+        axios.post('/postReply',{poemId:values.poemId,id:values.id, pwd:values.password, reply: values.reply}) 
+        .then(function (response) { console.log(response); }) 
+        .catch(error => { console.log('error : ',error.response) });
+  
+      }
+    } 
 
     return (
       <React.Fragment>
@@ -87,11 +113,16 @@ function Row({ row }) {
                     </Button>
                   </div>
                     <Collapse in={openReply} timeout="auto" unmountOnExit>
-                      <div style={{ margin:5,display:'flex', flexDirection:'row'}}>
-                        <TextField required id="standard-required"  defaultValue="닉네임"/>
-                        <TextField required id="standard-required"  defaultValue="비밀번호" />
-                        <TextField required id="standard-required"  defaultValue="내용" />
-                      </div>
+                      <form onSubmit ={handleSubmit} className={classes.root}  noValidate autoComplete="off">
+                        <div style={{ margin:5,display:'flex', flexDirection:'row'}}>
+                          <TextField id="outlined-basic" label="닉네임" name="id" variant="outlined" size="small" value={values.id} onChange={handleChange}/>
+                          <TextField id="outlined-basic" label="비밀번호" name="password" variant="outlined" size="small" value={values.password} onChange={handleChange}  />
+                          <TextField id="outlined-basic" label="내용" name="reply" variant="outlined" size="small" value={values.reply} onChange={handleChange}  />
+                          <button type="submit" >
+                            등록
+                          </button>
+                        </div>
+                      </form>
                   </Collapse>
                 </TableBody>
               </Table>

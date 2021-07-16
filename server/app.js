@@ -323,6 +323,26 @@ app.post('/postAcrostic', async (req, res, next) => {
     res.json({ code: 500, result: "error", message: e.message });
   }
 });
+app.post('/postReply', async (req, res, next) => {
+  
+  let {poemId, id, pwd, reply}=req.body;
+  try {
+    const sql=`INSERT INTO project1.REPLY 
+    SET poemId=?, name=?, password=?, reply=?;
+    `
+    const post = await pool.query(sql, [
+      poemId, id, pwd, reply
+    ])
+    console.log(post)
+
+    res.json({ code: 200, result: "success", data : post });
+  }
+  catch(e) {
+    console.log(e)
+    res.json({ code: 500, result: "error", message: e.message });
+  }
+});
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
