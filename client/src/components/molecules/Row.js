@@ -30,6 +30,8 @@ function Row({ row }) {
     const [openReply, setOpen_reply] = React.useState(false);
     const [values, setValues] = React.useState({ poemId:"", id: "", password: "", reply:"" });
 
+    console.log(row.word);
+
     const  handleChange = (e) => {
       const { name, value } = e.target;
       setValues({ ...values, [name]: value,poemId:row.poemId });
@@ -60,6 +62,7 @@ function Row({ row }) {
         <TableRow className={classes.root} onClick={() => setOpen(!open)}>
           <div style={{display:'flex', flexGrow:5,flexBasis:0}}>
             <Typography style={{flexGrow:2,flexBasis:0}}>{row.word}</Typography>
+            <Typography style={{fontSize: 12, color:'#888'}}>{dayjs(row.created).format("MM.DD HH:mm")}</Typography>
             <div style={{display:'flex',flexGrow:1,flexBasis:0}}>
               <PersonIcon />
               <Typography >{row.name}</Typography>
@@ -80,7 +83,7 @@ function Row({ row }) {
           <Collapse in={open} timeout="auto" unmountOnExit>
             <Box margin={3}>
               <Paper variant="outlined" square style={{padding:10}}>
-                <Typography variant="caption" gutterBottom component="div">
+              <Typography variant="caption" gutterBottom component="div">
                   {row.word.split('')[0]}{row.poem_1}
                 </Typography>
                 <Typography variant="caption" gutterBottom component="div">
