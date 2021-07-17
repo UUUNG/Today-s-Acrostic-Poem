@@ -2,6 +2,8 @@ import React from 'react';
 import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
 import axios from 'axios';
+import InputAdornment from '@material-ui/core/InputAdornment';
+
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -47,9 +49,15 @@ function PoemPostContainer() {
         <TextField id="outlined-basic" label="닉네임" name="id" variant="outlined" size="small" value={values.id} onChange={handleChange}/>
         <TextField id="outlined-basic" label="비밀번호" name="password" variant="outlined" size="small"value={values.password} onChange={handleChange}/>
         <div style={{ margin:10,display:'flex', flexDirection:'column'}}>
-          <TextField required id="standard-required" name="poem_1" defaultValue="바" value={values.poem_1} onChange={handleChange}/>
-          <TextField required id="standard-required" name="poem_2" defaultValue="나" value={values.poem_2} onChange={handleChange}/>
-          <TextField required id="standard-required" name="poem_3" defaultValue="나" value={values.poem_3} onChange={handleChange}/>
+          <TextField  InputProps={{
+            startAdornment: <InputAdornment position="start">바</InputAdornment>,
+            }} required id="standard-required" name="poem_1" value={values.poem_1} onChange={handleChange}/>
+          <TextField  InputProps={{
+            startAdornment: <InputAdornment position="start">나</InputAdornment>,
+            }} required id="standard-required" name="poem_2" value={values.poem_2} onChange={handleChange}/>
+          <TextField  InputProps={{
+            startAdornment: <InputAdornment position="start">나</InputAdornment>,
+            }} required id="standard-required" name="poem_3" value={values.poem_3} onChange={handleChange}/>
         </div>
         <div style={{display:'flex',justifyContent:'flex-end'}}>
           <button type="submit" >
