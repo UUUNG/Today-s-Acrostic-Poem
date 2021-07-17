@@ -321,7 +321,6 @@ app.post('/postReply', async (req, res, next) => {
   }
 });
 
-<<<<<<< HEAD
 app.post('/postLike', async (req, res, next) => {
   
   let {likes, poemId}=req.body;
@@ -334,23 +333,6 @@ app.post('/postLike', async (req, res, next) => {
       likes, poemId
     ])
     console.log(post)
-=======
-app.post('/deletePoem', async (req, res, next) => {
-  
-  let {name, pwd}=req.body;
-  try {
-    const sql=`DELETE FROM POEM 
-      WHERE name=? AND password=?;
-    `
-    const post = await pool.query(sql, [
-      name, pwd
-    ])
-
-    //댓글도 삭제
-    const rpySql = `DELETE FROM REPLY WHERE poemId=?;`
-    const sqlResult = `SELECT poemId FROM POEM WHERE name=? AND password=?;`
-    const rpyPost = await pool.query(rpySql, rqlResult);
->>>>>>> 3d03558a925f7d955daf3795cfe6f54797a0e16b
 
     res.json({ code: 200, result: "success", data : post });
   }
