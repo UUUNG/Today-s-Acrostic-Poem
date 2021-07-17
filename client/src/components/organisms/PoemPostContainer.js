@@ -22,8 +22,8 @@ function PoemPostContainer() {
   } 
 
   const handleSubmit= (e) => {
-    if(values.id==""||values.password==""||values.word==""||values.poem_1==""||values.poem_2==""||values.poem_3==""||(values.poem_1=="바"&&values.poem_2=="나"&&values.poem_3=="나")){
-      if(values.poem_1=="바"&&values.poem_2=="나"&&values.poem_3=="나"){
+    if(values.id===""||values.password===""||values.word===""||values.poem_1===""||values.poem_2==""||values.poem_3==""||(values.poem_1=="바"&&values.poem_2=="나"&&values.poem_3=="나")){
+      if(values.poem_1==="바"&&values.poem_2==="나"&&values.poem_3==="나"){
         alert("3행시를 입력해주세요!");
       }
       else{

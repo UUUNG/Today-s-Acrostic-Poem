@@ -31,7 +31,7 @@ const HOFdataContainer = () => {
         <Table aria-label="Ranking table">
           <TableBody>
             {rankData.map((row, idx) => (
-              <Row key={idx} row={row} onReply={false} />
+              <Row key={idx} row={row} onReply={false} onLike={false}/>
             ))}
           </TableBody>
         </Table>

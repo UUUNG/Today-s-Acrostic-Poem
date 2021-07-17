@@ -119,9 +119,6 @@ app.get('/MainLatest', async (req, res, next) => {
 
       idx += 1;
     }
-
-    console.log(poems)
-
     res.json({ code: 200, result: "success", data : poems });
   }
   catch(e) {
@@ -344,6 +341,26 @@ app.post('/postReply', async (req, res, next) => {
   }
 });
 
+app.post('/postLike', async (req, res, next) => {
+  
+  let {likes, poemId}=req.body;
+  console.log("likes in appjs", likes);
+  try {
+    const sql=`UPDATE project1.POEM 
+    SET likes=? WHERE poemId = ?;
+    `
+    const post = await pool.query(sql, [
+      likes, poemId
+    ])
+    console.log(post)
+
+    res.json({ code: 200, result: "success", data : post });
+  }
+  catch(e) {
+    console.log(e)
+    res.json({ code: 500, result: "error", message: e.message });
+  }
+});
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -108,7 +108,7 @@ const RankingContainer = () => {
         <Table aria-label="Ranking table">
           <TableBody>
             {rankData.slice(0,10).map((row, idx) => (
-              <Row key={idx} row={row} />
+              <Row key={idx} row={row}/>
             ))}
           </TableBody>
         </Table>

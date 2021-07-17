@@ -38,6 +38,7 @@ const MainPage = () => {
 
     callLikeApi()
     .then(res=>{
+      console.log("res.data:", res.data)
       setLikeList(res.data)
     })
     .catch(err=>console.log(err));

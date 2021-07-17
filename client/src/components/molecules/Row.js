@@ -31,12 +31,15 @@ const useRowStyles = makeStyles({
     },
   });
   
-function Row({ row, onReply = true }) {
+function Row({ row, onReply = true, onLike = true}) {
     let on = onReply;
+    let onLikes = onLike;
     const [open, setOpen] = React.useState(false);
     const classes = useRowStyles();
     const [openReply, setOpen_reply] = React.useState(false);
     const [values, setValues] = React.useState({ poemId:"", id: "", password: "", reply:"" });
+
+    const [setlike]  = React.useState({ likes: row.likes, id: row.poemId });
 
     const  handleChange = (e) => {
       const { name, value } = e.target;
@@ -61,10 +64,17 @@ function Row({ row, onReply = true }) {
   
       }
     } 
+  
+  const likeSubmit = (e) => {
+    axios.post('/postLike',{likes : parseInt(row.likes) + 1, poemId: row.poemId}) 
+    .then(function (response) { console.log(response); }) 
+    .catch(error => { console.log('error : ',error.response) });
+  }
 
     return (
       <React.Fragment>
-        {row && <div>
+        {row && 
+        <div>
           <Paper variant="outlined" square style={{display:'flex', flexDirection:'column',flexGrow:5,flexBasis:0}}>
           <TableRow className={classes.root} onClick={() => setOpen(!open)}>
             <div style={{display:'flex', flexGrow:5,flexBasis:0}}>
@@ -111,7 +121,20 @@ function Row({ row, onReply = true }) {
                       <InstapaperIcon size={26} round={true}/>
                     </InstapaperShareButton>
                   </div>
-                  
+                  {Boolean(onLikes) && <div>
+                    <form onSubmit ={likeSubmit} className={classes.root}  noValidate autoComplete="off">
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        size="small"
+                        type="submit"
+                        startIcon={<ThumbUpAltIcon />}
+                      >
+                        Like
+                      </Button>
+                    </form>
+                    </div>}
+                 
                 </Paper>
     
                 <Table size="small" aria-label="comments">
@@ -131,15 +154,15 @@ function Row({ row, onReply = true }) {
                           댓글쓰기
                         </Button>
                       </div>
-                        <Collapse in={openReply} timeout="auto" unmountOnExit>
-                          <div style={{ margin:5,display:'flex', flexDirection:'row'}}>
-                            <TextField required id="standard-required"  defaultValue="닉네임"/>
-                            <TextField required id="standard-required"  defaultValue="비밀번호" />
-                            <TextField required id="standard-required"  defaultValue="내용" />
-                          </div>
-                      </Collapse>
                       </div>
                     }
+                    <Collapse in={openReply} timeout="auto" unmountOnExit>
+                      <div style={{ margin:5,display:'flex', flexDirection:'row'}}>
+                        <TextField required id="standard-required"  defaultValue="닉네임"/>
+                        <TextField required id="standard-required"  defaultValue="비밀번호" />
+                        <TextField required id="standard-required"  defaultValue="내용" />
+                      </div>
+                    </Collapse>
                   </TableBody>
                 </Table>
               </Box>
