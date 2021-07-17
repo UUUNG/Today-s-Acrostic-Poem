@@ -26,31 +26,11 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-//const data = fs.readFileSync("./lib/pool.js");
-//var conf = JSON.parse(data);
-//var mysql = require('mysql');
-
-//pool.connect();
-
-//pool.connection.connet();
 const router = express.Router();
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
-/*
-app.get('/', (req, res, next) => {
-  //var connect;
-  pool.getConnection()
-  .then((connect) => {
-    return connect.query('SELECT * FROM notice');
-  }).then((r) => { 
-    res.json(r); 
-  }).catch((e) => {
-    res.json(e);
-  });
-});
-*/
 
 app.get('/MainLike', async (req, res, next) => {
   try {
@@ -94,7 +74,7 @@ app.get('/MainLike', async (req, res, next) => {
 app.get('/MainLatest', async (req, res, next) => {
   try {
     const sqlPoem = `
-      SELECT * 
+      SELECT *
       FROM POEM 
       WHERE DATE_FORMAT(created, "%Y-%m-%d")=current_date()
       ORDER BY created desc
@@ -310,7 +290,7 @@ app.post('/postAcrostic', async (req, res, next) => {
   let {id, pwd, word, poem_1, poem_2, poem_3}=req.body;
   try {
     const sql=`INSERT INTO project1.POEM 
-    SET name=?, password=?, word=?, poem_1=?, poem_2=?,poem_3=?;
+    SET name=?, password=?, word=?, poem_1=?, poem_2=?,poem_3=?, likes=0, comment=0;
     `
     const post = await pool.query(sql, [
       id, pwd, word, poem_1, poem_2, poem_3
@@ -344,6 +324,29 @@ app.post('/postReply', async (req, res, next) => {
   }
 });
 
+app.post('/deletePoem', async (req, res, next) => {
+  
+  let {name, pwd}=req.body;
+  try {
+    const sql=`DELETE FROM POEM 
+      WHERE name=? AND password=?;
+    `
+    const post = await pool.query(sql, [
+      name, pwd
+    ])
+
+    //댓글도 삭제
+    const rpySql = `DELETE FROM REPLY WHERE poemId=?;`
+    const sqlResult = `SELECT poemId FROM POEM WHERE name=? AND password=?;`
+    const rpyPost = await pool.query(rpySql, rqlResult);
+
+    res.json({ code: 200, result: "success", data : post });
+  }
+  catch(e) {
+    console.log(e)
+    res.json({ code: 500, result: "error", message: e.message });
+  }
+});
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
