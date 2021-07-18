@@ -16,8 +16,11 @@ import axios from 'axios';
 import dayjs from 'dayjs';
 
 import IconButton from '@material-ui/core/IconButton';
+import RemoveCircleIcon from '@material-ui/icons/RemoveCircle';
 import DeleteIcon from '@material-ui/icons/Delete';
-import DeleteForm from './DeleteForm'
+import DeleteForm from './DeleteForm';
+import Report from './Report';
+
 import {
   FacebookShareButton,
   InstapaperShareButton,
@@ -39,7 +42,10 @@ function Row({ row, onReply = true, onLike = true}) {
     let on = onReply;
     let onLikes = onLike;
     const [open, setOpen] = React.useState(false);
-    const [openDelete, setOpenDelete] = React.useState(false);
+    const [openDelete, setOpenDelete] = React.useState(false);    
+    const [openReport, setOpenReport] = React.useState(false);
+    const [openReport2, setOpenReport2] = React.useState(false);
+
     const classes = useRowStyles();
     const [openReply, setOpen_reply] = React.useState(false);
     const [values, setValues] = React.useState({ poemId:"", id: "", password: "", reply:"" });
@@ -131,9 +137,13 @@ function Row({ row, onReply = true, onLike = true}) {
                     <Collapse in={openDelete} timeout="auto" unmountOnExit>
                       <DeleteForm row={row}/>
                     </Collapse>
-
-                    
-                    
+                    {/* 신고 부분 */}
+                    <IconButton aria-label="delete" className={classes.margin} onClick={() => setOpenReport(!openReport)}>
+                      <RemoveCircleIcon color="error" fontSize="small"></RemoveCircleIcon>
+                    </IconButton>
+                    <Collapse in={openReport} timeout="auto" unmountOnExit>
+                      <Report row={row}/>
+                    </Collapse>
                   </div>
                   {Boolean(onLikes) && <div>
                     <form onSubmit ={likeSubmit} className={classes.root}  noValidate autoComplete="off">
@@ -159,7 +169,15 @@ function Row({ row, onReply = true, onLike = true}) {
                           <Typography style={{fontSize: 12, marginRight: 10}}>{historyRow.name}</Typography>
                           <Typography style={{fontSize: 12, color:'#888'}}>{dayjs(historyRow.created).format("MM.DD HH:mm")}</Typography>
                         </div>
+                        <div style={{display:'flex'}}>
                         <Typography style={{fontSize: 14}}>{historyRow.reply}</Typography>
+                          <IconButton aria-label="delete" className={classes.margin} onClick={() => setOpenReport2(!openReport2)}>
+                            <RemoveCircleIcon color="error" fontSize="small"></RemoveCircleIcon>
+                          </IconButton>
+                          <Collapse in={openReport2} timeout="auto" unmountOnExit>
+                            <Report row={historyRow}/>
+                          </Collapse>
+                        </div>
                       </div>
                     ))}
                     {Boolean(on) && <div>

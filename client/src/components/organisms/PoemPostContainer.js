@@ -3,6 +3,9 @@ import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
 import axios from 'axios';
 import InputAdornment from '@material-ui/core/InputAdornment';
+import Button from '@material-ui/core/Button'
+import IconButton from '@material-ui/core/IconButton';
+import Typography from '@material-ui/core/Typography';
 
 
 const useStyles = makeStyles((theme) => ({
@@ -50,19 +53,23 @@ function PoemPostContainer() {
         <TextField id="outlined-basic" label="비밀번호" name="password" variant="outlined" size="small"value={values.password} onChange={handleChange}/>
         <div style={{ margin:10,display:'flex', flexDirection:'column'}}>
           <TextField  InputProps={{
-            startAdornment: <InputAdornment position="start">바</InputAdornment>,
+            startAdornment: <InputAdornment position="start"> </InputAdornment>,
             }} required id="standard-required" name="poem_1" value={values.poem_1} onChange={handleChange}/>
           <TextField  InputProps={{
-            startAdornment: <InputAdornment position="start">나</InputAdornment>,
+            startAdornment: <InputAdornment position="start"> </InputAdornment>,
             }} required id="standard-required" name="poem_2" value={values.poem_2} onChange={handleChange}/>
           <TextField  InputProps={{
-            startAdornment: <InputAdornment position="start">나</InputAdornment>,
+            startAdornment: <InputAdornment position="start"> </InputAdornment>,
             }} required id="standard-required" name="poem_3" value={values.poem_3} onChange={handleChange}/>
         </div>
         <div style={{display:'flex',justifyContent:'flex-end'}}>
-          <button type="submit" >
+          <Button 
+            color="primary"
+            size="small"
+            type="submit"
+            >
             등록
-          </button>
+          </Button>
         </div>
       </form>
 
