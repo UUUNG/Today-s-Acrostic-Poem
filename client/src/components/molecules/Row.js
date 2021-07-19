@@ -54,21 +54,6 @@ function Row({ row, onReply = true, onLike = true}) {
   
     const [setlike]  = React.useState({ likes: row.likes, id: row.poemId });
 
-    const callGetPoemIdtApi = async()=>{
-      const response = await fetch('/getPOEMId');
-      const body = await response.json();
-      return body;
-    }
-
-    useEffect(()=>{
-      callGetPoemIdtApi()
-      .then(res=>{
-        let toObject = Object.values(res.data[0][0])
-        setPoemId(parseInt(toObject))
-      })
-      .catch(err=>console.log(err));
-    }, []);
-  
     const  handleChange = (e) => {
       const { name, value } = e.target;
       setValues({ ...values, [name]: value,poemId:row.poemId });
@@ -146,7 +131,7 @@ function Row({ row, onReply = true, onLike = true}) {
                     <InstapaperShareButton url={"https://localhost:3000"} title={"facebook"}>
                       <InstapaperIcon size={26} round={true}/>
                     </InstapaperShareButton>
-
+                   {/*  삭제 기능 */}
                     <IconButton aria-label="delete" className={classes.margin} onClick={() => setOpenDelete(!openDelete)}>
                       <DeleteIcon fontSize="small" />
                     </IconButton>
