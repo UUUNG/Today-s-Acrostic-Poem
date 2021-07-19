@@ -282,31 +282,9 @@ app.get('/HOFPage', async (req, res, next) => {
   }
 });
 
-app.get('/getPOEMId', async (req, res, next) => {
-  try {
-    /* POEM 테이블 행의 개수 = 새로 등록될 poem id로 계산 */
-    const sql_poemId = `
-      SELECT COUNT(*) 
-      FROM project1.POEM;
-    ` 
-    const result_poemId = await pool.query(sql_poemId);
-    
-   /*  let hofs = resultHof[0];
-        let idx = 0;
-    */
-    console.log(result_poemId)
-
-    res.json({ code: 200, result: "success", data : result_poemId });
-  }
-  catch(e) {
-    console.log(e)
-    res.json({ code: 500, result: "error", message: e.message });
-  }
-});
-
 app.post('/postAcrostic', async (req, res, next) => {
    
-  let {id, pwd, word, poem_1, poem_2, poem_3, poemId}=req.body;
+  let {id, pwd, word, poem_1, poem_2, poem_3}=req.body;
   
   try {
 

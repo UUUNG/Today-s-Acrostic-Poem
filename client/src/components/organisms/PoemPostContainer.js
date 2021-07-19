@@ -19,22 +19,7 @@ const useStyles = makeStyles((theme) => ({
 
 function PoemPostContainer() {
   const classes = useStyles();
-  const [poemId, setPoemId] = React.useState(0);
   const [values, setValues] = React.useState({ id: "", password: "", word:"바나나",poem_1:"바",poem_2:"나",poem_3:"나"});
-  const callGetPoemIdtApi = async()=>{
-    const response = await fetch('/getPOEMId');
-    const body = await response.json();
-    return body;
-  }
-
-  useEffect(()=>{
-    callGetPoemIdtApi()
-    .then(res=>{
-      let toObject = Object.values(res.data[0][0])
-      setPoemId(parseInt(toObject))
-    })
-    .catch(err=>console.log(err));
-  }, []);
   
   const  handleChange = (e) => {
     const { name, value } = e.target;
@@ -54,7 +39,7 @@ function PoemPostContainer() {
 
     }else{
       alert('3행시가 등록되었습니다!');
-      axios.post('/postAcrostic',{id:values.id, pwd:values.password, word:values.word, poem_1:values.poem_1, poem_2:values.poem_2, poem_3:values.poem_3, poemId: poemId }) 
+      axios.post('/postAcrostic',{id:values.id, pwd:values.password, word:values.word, poem_1:values.poem_1, poem_2:values.poem_2, poem_3:values.poem_3}) 
       .then(function (response) { console.log(response); }) 
       .catch(error => { console.log('error : ',error.response) });
 
