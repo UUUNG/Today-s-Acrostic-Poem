@@ -12,16 +12,27 @@ const useRowStyles = makeStyles({
     },
   });
 
-function DeleteForm({ row }) {
+function DeleteForm({ row, isReply }) {
 
     const classes = useRowStyles();
-    const [poemDelete, setPoemDelete] = React.useState({ name: "", password: ""})
+    const [poemDelete, setPoemDelete] = React.useState({
+        poemId: row.poemId, 
+        replyId: row.poemId, 
+        name: "", 
+        password: ""
+    })
 
     const callDeleteApi = async()=>{
-
-        const response = await fetch('/PoemDelete');
-        const body = await response.json();
-        return body;
+        if(isReply) {
+            console.log("댓글 삭제");
+            const response = await fetch('/deleteReply');
+            const body = await response.json();
+            return body;
+        } else {
+            const response = await fetch('/deletePoem');
+            const body = await response.json();
+            return body;
+        }
     }
 
     useEffect(()=>{  
@@ -34,9 +45,14 @@ function DeleteForm({ row }) {
 
     const  handleDeleteChange = (e) => {
         let nextState = {
-        name: poemDelete.name,
-        password: poemDelete.password,
+            poemId: row.poemId,
+            replyId: row.poemId,
+            name: poemDelete.name,
+            password: poemDelete.password,
         };
+        if(isReply) {
+            nextState["replyId"] = row.replyId;
+        }
         nextState[e.target.name] = e.target.value;
         setPoemDelete(nextState);
     } 
@@ -44,16 +60,23 @@ function DeleteForm({ row }) {
     const handleSubmit = (e) => {
         e.preventDefault();
         if(poemDelete.name==""||poemDelete.password==""){
-        alert("삭제 정보를 입력해주세요.");
+            alert("삭제 정보를 입력해주세요.");
         }else if(poemDelete.name!=row.name || poemDelete.password != row.password) {
-        alert("삭제 정보가 틀렸습니다.");
+            alert("삭제 정보가 틀렸습니다.");
         }else{
-        alert('3행시가 삭제되었습니다!');
-        axios.post('/deletePoem',{name:poemDelete.name, pwd:poemDelete.password}) 
-        .then(function (response) { console.log(response); }) 
-        .catch(error => { console.log('error : ',error.response) });
-        window.location.reload();
+            if(isReply) {
+                alert('댓글이 삭제되었습니다!');
+                axios.post('/deleteReply',{id:poemDelete.poemId, rpyId: poemDelete.replyId, name:poemDelete.name, pwd:poemDelete.password}) 
+                .then(function (response) { console.log(response); }) 
+                .catch(error => { console.log('error : ',error.response) });
+            } else {
+                alert('3행시가 삭제되었습니다!');
+                axios.post('/deletePoem',{id:poemDelete.poemId, name:poemDelete.name, pwd:poemDelete.password}) 
+                .then(function (response) { console.log(response); }) 
+                .catch(error => { console.log('error : ',error.response) });
+            }
         }
+        window.location.reload();
     }
 
     return (

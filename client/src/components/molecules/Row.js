@@ -20,6 +20,7 @@ import RemoveCircleIcon from '@material-ui/icons/RemoveCircle';
 import DeleteIcon from '@material-ui/icons/Delete';
 import DeleteForm from './DeleteForm';
 import Report from './Report';
+import HistoryRow from './HistoryRow'
 
 import {
   FacebookShareButton,
@@ -151,7 +152,7 @@ function Row({ row, onReply = true, onLike = true}) {
                     </IconButton>
 
                     <Collapse in={openDelete} timeout="auto" unmountOnExit>
-                      <DeleteForm row={row}/>
+                      <DeleteForm row={row} isReply={false}/>
                     </Collapse>
                     {/* 신고 부분 */}
                     <IconButton aria-label="delete" className={classes.margin} onClick={() => setOpenReport(!openReport)}>
@@ -180,27 +181,14 @@ function Row({ row, onReply = true, onLike = true}) {
                 <Table size="small" aria-label="comments">
                   <TableBody>
                     {row.replyList && row.replyList.map((historyRow, idx) => (
-                      <div style={{padding: 10}}>
-                        <div style={{display:'flex'}}>
-                          <Typography style={{fontSize: 12, marginRight: 10}}>{historyRow.name}</Typography>
-                          <Typography style={{fontSize: 12, color:'#888'}}>{dayjs(historyRow.created).format("MM.DD HH:mm")}</Typography>
-                        </div>
-                        <div style={{display:'flex'}}>
-                        <Typography style={{fontSize: 14}}>{historyRow.reply}</Typography>
-                          <IconButton aria-label="delete" className={classes.margin} onClick={() => setOpenReport2(!openReport2)}>
-                            <RemoveCircleIcon color="error" fontSize="small"></RemoveCircleIcon>
-                          </IconButton>
-                          <Collapse in={openReport2} timeout="auto" unmountOnExit>
-                            <Report row={historyRow}/>
-                          </Collapse>
-                        </div>
-                      </div>
+                      <HistoryRow key={idx} historyRow={historyRow}/>
                     ))}
                     {Boolean(on) && <div>
                       <div style={{display:'flex',flexGrow:1,flexBasis:0}}>
                         <Button onClick={() => setOpen_reply(!openReply)}>
                           댓글쓰기
                         </Button>
+
                       </div>
                         <Collapse in={openReply} timeout="auto" unmountOnExit>
                         <form onSubmit ={handleSubmit} className={classes.root}  noValidate autoComplete="off">
