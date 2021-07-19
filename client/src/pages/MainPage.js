@@ -20,7 +20,6 @@ const MainPage = () => {
   const classes = useStyles();
   const [likeList, setLikeList] = React.useState([]);
   const [latestList, setLatestList] = React.useState([]);
-  const [keyword, setKeyword] = React.useState();
   const [plus, setPlus] = React.useState(false);
 
   const callLikeApi = async()=>{
@@ -32,12 +31,6 @@ const MainPage = () => {
 
   const callLatestApi = async()=>{
     const response = await fetch('/MainLatest');
-    const body = await response.json();
-    return body;
-  }
-
-  const callKeywordApi = async()=>{
-    const response = await fetch('/Keyword');
     const body = await response.json();
     return body;
   }
@@ -54,13 +47,6 @@ const MainPage = () => {
     callLatestApi()
     .then(res=>{
       setLatestList(res.data)
-    })
-    .catch(err=>console.log(err));
-
-    callKeywordApi()
-    .then(res=>{
-      setKeyword(res.data[0].keyword)
-      console.log(res.data[0].keyword)
     })
     .catch(err=>console.log(err));
 
@@ -117,7 +103,7 @@ const MainPage = () => {
           <AllPoemList displayData={displayData}/>
         </div> :
         <Container maxWidth="sm">
-          <KeywordContainer keyword={keyword}/>
+          <KeywordContainer/>
           <div style={{display:'flex',justifyContent:'space-between'}}>
             <div style={{display:'flex'}}>
               <Button onClick={() => handleSortingClick('실시간 좋아요순')} style={{borderRight:'1px solid #EEE'}}>
