@@ -282,16 +282,49 @@ app.get('/HOFPage', async (req, res, next) => {
   }
 });
 
-app.post('/postAcrostic', async (req, res, next) => {
-  
-  let {id, pwd, word, poem_1, poem_2, poem_3}=req.body;
+app.get('/getPOEMId', async (req, res, next) => {
   try {
-    const sql=`INSERT INTO project1.POEM 
-    SET name=?, password=?, word=?, poem_1=?, poem_2=?,poem_3=?, likes=0, comment=0;
+    /* POEM 테이블 행의 개수 = 새로 등록될 poem id로 계산 */
+    const sql_poemId = `
+      SELECT COUNT(*) 
+      FROM project1.POEM;
+    ` 
+    const result_poemId = await pool.query(sql_poemId);
+    
+   /*  let hofs = resultHof[0];
+        let idx = 0;
+    */
+    console.log(result_poemId)
+
+    res.json({ code: 200, result: "success", data : result_poemId });
+  }
+  catch(e) {
+    console.log(e)
+    res.json({ code: 500, result: "error", message: e.message });
+  }
+});
+
+app.post('/postAcrostic', async (req, res, next) => {
+   
+  let {id, pwd, word, poem_1, poem_2, poem_3, poemId}=req.body;
+  
+  try {
+
+    const sql_poemId = `
+      SELECT COUNT(poemId) FROM project1.REPLY WHERE REPLY.poemId = ?
     `
+    const post_comment = await pool.query(sql_poemId, [poemId])
+    const count_comment = parseInt(Object.values(post_comment[0][0]))
+    console.log("count_comment: ", count_comment);
+
+    const sql=`INSERT INTO project1.POEM 
+    SET name=?, password=?, word=?, poem_1=?, poem_2=?,poem_3=?, likes=0, comment=?;
+    `
+    
     const post = await pool.query(sql, [
-      id, pwd, word, poem_1, poem_2, poem_3
+      id, pwd, word, poem_1, poem_2, poem_3, count_comment
     ])
+    
     console.log(post)
 
     res.json({ code: 200, result: "success", data : post });

@@ -49,9 +49,25 @@ function Row({ row, onReply = true, onLike = true}) {
     const classes = useRowStyles();
     const [openReply, setOpen_reply] = React.useState(false);
     const [values, setValues] = React.useState({ poemId:"", id: "", password: "", reply:"" });
-
+    const [poemId, setPoemId] = React.useState(0);
+  
     const [setlike]  = React.useState({ likes: row.likes, id: row.poemId });
 
+    const callGetPoemIdtApi = async()=>{
+      const response = await fetch('/getPOEMId');
+      const body = await response.json();
+      return body;
+    }
+
+    useEffect(()=>{
+      callGetPoemIdtApi()
+      .then(res=>{
+        let toObject = Object.values(res.data[0][0])
+        setPoemId(parseInt(toObject))
+      })
+      .catch(err=>console.log(err));
+    }, []);
+  
     const  handleChange = (e) => {
       const { name, value } = e.target;
       setValues({ ...values, [name]: value,poemId:row.poemId });
