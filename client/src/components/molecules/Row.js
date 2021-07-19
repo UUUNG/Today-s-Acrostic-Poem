@@ -18,6 +18,8 @@ import dayjs from 'dayjs';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
 import DeleteForm from './DeleteForm'
+import HistoryRow from './HistoryRow'
+
 import {
   FacebookShareButton,
   InstapaperShareButton,
@@ -129,7 +131,7 @@ function Row({ row, onReply = true, onLike = true}) {
                     </IconButton>
 
                     <Collapse in={openDelete} timeout="auto" unmountOnExit>
-                      <DeleteForm row={row}/>
+                      <DeleteForm row={row} isReply={false}/>
                     </Collapse>
 
                     
@@ -154,19 +156,14 @@ function Row({ row, onReply = true, onLike = true}) {
                 <Table size="small" aria-label="comments">
                   <TableBody>
                     {row.replyList && row.replyList.map((historyRow, idx) => (
-                      <div style={{padding: 10}}>
-                        <div style={{display:'flex'}}>
-                          <Typography style={{fontSize: 12, marginRight: 10}}>{historyRow.name}</Typography>
-                          <Typography style={{fontSize: 12, color:'#888'}}>{dayjs(historyRow.created).format("MM.DD HH:mm")}</Typography>
-                        </div>
-                        <Typography style={{fontSize: 14}}>{historyRow.reply}</Typography>
-                      </div>
+                      <HistoryRow key={idx} historyRow={historyRow}/>
                     ))}
                     {Boolean(on) && <div>
                       <div style={{display:'flex',flexGrow:1,flexBasis:0}}>
                         <Button onClick={() => setOpen_reply(!openReply)}>
                           댓글쓰기
                         </Button>
+
                       </div>
                         <Collapse in={openReply} timeout="auto" unmountOnExit>
                         <form onSubmit ={handleSubmit} className={classes.root}  noValidate autoComplete="off">
