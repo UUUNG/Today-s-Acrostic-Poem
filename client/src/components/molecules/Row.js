@@ -16,8 +16,12 @@ import axios from 'axios';
 import dayjs from 'dayjs';
 
 import IconButton from '@material-ui/core/IconButton';
+import RemoveCircleIcon from '@material-ui/icons/RemoveCircle';
 import DeleteIcon from '@material-ui/icons/Delete';
-import DeleteForm from './DeleteForm'
+import DeleteForm from './DeleteForm';
+import Report from './Report';
+import HistoryRow from './HistoryRow'
+
 import {
   FacebookShareButton,
   InstapaperShareButton,
@@ -39,11 +43,15 @@ function Row({ row, onReply = true, onLike = true}) {
     let on = onReply;
     let onLikes = onLike;
     const [open, setOpen] = React.useState(false);
-    const [openDelete, setOpenDelete] = React.useState(false);
+    const [openDelete, setOpenDelete] = React.useState(false);    
+    const [openReport, setOpenReport] = React.useState(false);
+    const [openReport2, setOpenReport2] = React.useState(false);
+
     const classes = useRowStyles();
     const [openReply, setOpen_reply] = React.useState(false);
     const [values, setValues] = React.useState({ poemId:"", id: "", password: "", reply:"" });
-
+    const [poemId, setPoemId] = React.useState(0);
+  
     const [setlike]  = React.useState({ likes: row.likes, id: row.poemId });
 
     const  handleChange = (e) => {
@@ -123,17 +131,21 @@ function Row({ row, onReply = true, onLike = true}) {
                     <InstapaperShareButton url={"https://localhost:3000"} title={"facebook"}>
                       <InstapaperIcon size={26} round={true}/>
                     </InstapaperShareButton>
-
+                   {/*  삭제 기능 */}
                     <IconButton aria-label="delete" className={classes.margin} onClick={() => setOpenDelete(!openDelete)}>
                       <DeleteIcon fontSize="small" />
                     </IconButton>
 
                     <Collapse in={openDelete} timeout="auto" unmountOnExit>
-                      <DeleteForm row={row}/>
+                      <DeleteForm row={row} isReply={false}/>
                     </Collapse>
-
-                    
-                    
+                    {/* 신고 부분 */}
+                    <IconButton aria-label="delete" className={classes.margin} onClick={() => setOpenReport(!openReport)}>
+                      <RemoveCircleIcon color="error" fontSize="small"></RemoveCircleIcon>
+                    </IconButton>
+                    <Collapse in={openReport} timeout="auto" unmountOnExit>
+                      <Report row={row}/>
+                    </Collapse>
                   </div>
                   {Boolean(onLikes) && <div>
                     <form onSubmit ={likeSubmit} className={classes.root}  noValidate autoComplete="off">
@@ -154,19 +166,14 @@ function Row({ row, onReply = true, onLike = true}) {
                 <Table size="small" aria-label="comments">
                   <TableBody>
                     {row.replyList && row.replyList.map((historyRow, idx) => (
-                      <div style={{padding: 10}}>
-                        <div style={{display:'flex'}}>
-                          <Typography style={{fontSize: 12, marginRight: 10}}>{historyRow.name}</Typography>
-                          <Typography style={{fontSize: 12, color:'#888'}}>{dayjs(historyRow.created).format("MM.DD HH:mm")}</Typography>
-                        </div>
-                        <Typography style={{fontSize: 14}}>{historyRow.reply}</Typography>
-                      </div>
+                      <HistoryRow key={idx} historyRow={historyRow}/>
                     ))}
                     {Boolean(on) && <div>
                       <div style={{display:'flex',flexGrow:1,flexBasis:0}}>
                         <Button onClick={() => setOpen_reply(!openReply)}>
                           댓글쓰기
                         </Button>
+
                       </div>
                         <Collapse in={openReply} timeout="auto" unmountOnExit>
                         <form onSubmit ={handleSubmit} className={classes.root}  noValidate autoComplete="off">

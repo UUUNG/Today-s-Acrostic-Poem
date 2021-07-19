@@ -39,7 +39,6 @@ const MainPage = () => {
 
     callLikeApi()
     .then(res=>{
-      console.log("res.data:", res.data)
       setLikeList(res.data)
     })
     .catch(err=>console.log(err));
@@ -79,7 +78,6 @@ const MainPage = () => {
 
   return (
     <div>
-      
         {plus===true ?        
         <div>
           <Container maxWidth="sm">
@@ -121,7 +119,6 @@ const MainPage = () => {
           <PoemListContainer  displayData={displayData}/>
         </Container>
         }
-
     </div>
 
   )

@@ -3,6 +3,7 @@ import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
 import axios from 'axios';
 import InputAdornment from '@material-ui/core/InputAdornment';
+import Button from '@material-ui/core/Button'
 
 
 const useStyles = makeStyles((theme) => ({
@@ -36,7 +37,7 @@ function PoemPostContainer({keyword}) {
 
     }else{
       alert('3행시가 등록되었습니다!');
-      axios.post('/postAcrostic',{id:values.id, pwd:values.password, word:values.word, poem_1:values.poem_1, poem_2:values.poem_2, poem_3:values.poem_3 }) 
+      axios.post('/postAcrostic',{id:values.id, pwd:values.password, word:values.word, poem_1:values.poem_1, poem_2:values.poem_2, poem_3:values.poem_3}) 
       .then(function (response) { console.log(response); }) 
       .catch(error => { console.log('error : ',error.response) });
 
@@ -60,9 +61,13 @@ function PoemPostContainer({keyword}) {
             }} required id="standard-required" name="poem_3" value={values.poem_3} onChange={handleChange}/>
         </div>
         <div style={{display:'flex',justifyContent:'flex-end'}}>
-          <button type="submit" >
+          <Button 
+            color="primary"
+            size="small"
+            type="submit"
+            >
             등록
-          </button>
+          </Button>
         </div>
       </form>
 
