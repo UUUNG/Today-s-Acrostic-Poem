@@ -31,7 +31,6 @@ const router = express.Router();
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
-
 app.get('/MainLike', async (req, res, next) => {
   try {
     const sqlPoem = `
@@ -61,12 +60,12 @@ app.get('/MainLike', async (req, res, next) => {
       idx += 1;
     }
 
-    console.log(poems)
+    //console.log(poems)
 
     res.json({ code: 200, result: "success", data : poems });
   }
   catch(e) {
-    console.log(e)
+    //console.log(e)
     res.json({ code: 500, result: "error", message: e.message });
   }
 });
@@ -102,7 +101,7 @@ app.get('/MainLatest', async (req, res, next) => {
     res.json({ code: 200, result: "success", data : poems });
   }
   catch(e) {
-    console.log(e)
+    //console.log(e)
     res.json({ code: 500, result: "error", message: e.message });
   }
 });
@@ -111,7 +110,7 @@ app.get('/MainLatest', async (req, res, next) => {
 app.get('/NoticePage', async (req, res, next) => {
   try {
     const result = await pool.query('SELECT * FROM notice;')
-    console.log(result[0])
+    //console.log(result[0])
     res.json({ code: 200, result: "success", data : result[0] });
   }
   catch(e) {
@@ -173,12 +172,12 @@ app.get('/RankingWeekly', async (req, res, next) => {
       idx += 1;
     }
 
-    console.log(poems)
+    //console.log(poems)
 
     res.json({ code: 200, result: "success", data : poems });
   }
   catch(e) {
-    console.log(e)
+    //console.log(e)
     res.json({ code: 500, result: "error", message: e.message });
   }
 });
@@ -212,12 +211,12 @@ app.get('/RankingMonthly', async (req, res, next) => {
       idx += 1;
     }
 
-    console.log(poems)
+    //console.log(poems)
 
     res.json({ code: 200, result: "success", data : poems });
   }
   catch(e) {
-    console.log(e)
+    //console.log(e)
     res.json({ code: 500, result: "error", message: e.message });
   }
 });
@@ -251,12 +250,12 @@ app.get('/RankingYearly', async (req, res, next) => {
       idx += 1;
     }
 
-    console.log(poems)
+    //console.log(poems)
 
     res.json({ code: 200, result: "success", data : poems });
   }
   catch(e) {
-    console.log(e)
+    //console.log(e)
     res.json({ code: 500, result: "error", message: e.message });
   }
 });
@@ -272,12 +271,12 @@ app.get('/HOFPage', async (req, res, next) => {
     let hofs = resultHof[0];
     let idx = 0;
 
-    console.log(hofs)
+    //console.log(hofs)
 
     res.json({ code: 200, result: "success", data : hofs });
   }
   catch(e) {
-    console.log(e)
+    //console.log(e)
     res.json({ code: 500, result: "error", message: e.message });
   }
 });
@@ -311,12 +310,12 @@ app.post('/postReply', async (req, res, next) => {
     const post = await pool.query(sql, [
       poemId, id, pwd, reply
     ])
-    console.log(post)
+    //console.log(post)
 
     res.json({ code: 200, result: "success", data : post });
   }
   catch(e) {
-    console.log(e)
+    //console.log(e)
     res.json({ code: 500, result: "error", message: e.message });
   }
 });
@@ -332,15 +331,35 @@ app.post('/postLike', async (req, res, next) => {
     const post = await pool.query(sql, [
       likes, poemId
     ])
-    console.log(post)
+    //console.log(post)
 
     res.json({ code: 200, result: "success", data : post });
   }
   catch(e) {
-    console.log(e)
+    //console.log(e)
     res.json({ code: 500, result: "error", message: e.message });
   }
 });
+
+app.get('/Keyword', async (req, res, next) => {
+
+  const rand_1_10 = Math.floor(Math.random() * 10) + 1;
+  console.log(rand_1_10);
+  try {
+    const sql=`
+    SELECT keyword FROM project1.keyword where idkeyword=?
+    `
+    const result = await pool.query(sql, [
+      rand_1_10
+    ])
+    console.log(result[0])
+    res.json({ code: 200, result: "success", data : result[0] });
+  }
+  catch(e) {
+    res.json({ code: 500, result: "error", message: e.message });
+  }
+});
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

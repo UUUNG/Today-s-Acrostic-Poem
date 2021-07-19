@@ -14,9 +14,9 @@ const useStyles = makeStyles((theme) => ({
 })); 
 
 
-function PoemPostContainer() {
+function PoemPostContainer({keyword}) {
   const classes = useStyles();
-  const [values, setValues] = React.useState({ id: "", password: "", word:"바나나",poem_1:"바",poem_2:"나",poem_3:"나" });
+  const [values, setValues] = React.useState({ id: "", password: "", word:keyword,poem_1:"",poem_2:"",poem_3:"" });
 
   const  handleChange = (e) => {
     const { name, value } = e.target;
@@ -24,8 +24,8 @@ function PoemPostContainer() {
   } 
 
   const handleSubmit= (e) => {
-    if(values.id===""||values.password===""||values.word===""||values.poem_1===""||values.poem_2==""||values.poem_3==""||(values.poem_1=="바"&&values.poem_2=="나"&&values.poem_3=="나")){
-      if(values.poem_1==="바"&&values.poem_2==="나"&&values.poem_3==="나"){
+    if(values.id===""||values.password===""||values.word===""||(values.poem_1==""&&values.poem_2==""&&values.poem_3=="")){
+      if(values.poem_1==""&&values.poem_2==""&&values.poem_3==""){
         alert("3행시를 입력해주세요!");
       }
       else{
@@ -50,13 +50,13 @@ function PoemPostContainer() {
         <TextField id="outlined-basic" label="비밀번호" name="password" variant="outlined" size="small"value={values.password} onChange={handleChange}/>
         <div style={{ margin:10,display:'flex', flexDirection:'column'}}>
           <TextField  InputProps={{
-            startAdornment: <InputAdornment position="start">바</InputAdornment>,
+            startAdornment: <InputAdornment position="start">{keyword.split('')[0]}</InputAdornment>,
             }} required id="standard-required" name="poem_1" value={values.poem_1} onChange={handleChange}/>
           <TextField  InputProps={{
-            startAdornment: <InputAdornment position="start">나</InputAdornment>,
+            startAdornment: <InputAdornment position="start">{keyword.split('')[1]}</InputAdornment>,
             }} required id="standard-required" name="poem_2" value={values.poem_2} onChange={handleChange}/>
           <TextField  InputProps={{
-            startAdornment: <InputAdornment position="start">나</InputAdornment>,
+            startAdornment: <InputAdornment position="start">{keyword.split('')[2]}</InputAdornment>,
             }} required id="standard-required" name="poem_3" value={values.poem_3} onChange={handleChange}/>
         </div>
         <div style={{display:'flex',justifyContent:'flex-end'}}>

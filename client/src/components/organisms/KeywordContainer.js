@@ -5,7 +5,7 @@ import Button from '@material-ui/core/Button';
 import Collapse from '@material-ui/core/Collapse';
 
 
-const KeywordContainer = () => {
+const KeywordContainer = ({keyword}) => {
 
   const [open_content, setOpen_content] = React.useState(false);
 
@@ -20,13 +20,13 @@ const KeywordContainer = () => {
 
       <Button  onClick={() => setOpen_content(!open_content)}>
         <Typography variant="h1" style={{textAlign:'center'}}>
-          바나나
+          {keyword}
         </Typography>
       </Button>
 
       
       <Collapse in={open_content} timeout="auto" unmountOnExit>
-        <PoemPostContainer/>
+        <PoemPostContainer keyword={keyword}/>
       </Collapse>
 
       
